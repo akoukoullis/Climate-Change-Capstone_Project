@@ -1,0 +1,188 @@
+HDR Antarctica Mass Variability Time Series Version 1 from JPL GRACE Mascon CRI Filtered
+HDR
+HDR Data from the GRACE JPL RL05M.1 Mascon Solution: Version 2
+HDR
+HDR This file contains values that are anomalies relative to April 2002 computed at the Jet Propulsion Laboratory under the
+HDR auspices of the NASA MEaSUREs program. The Antarctic mass anomalies are generated using GRACE data from the JPL RL05M.1
+HDR Mascon Solution: Version 2 (https://podaac.jpl.nasa.gov/dataset/TELLUS_GRACE_MASCON_CRI_GRID_RL05_V2).
+HDR
+HDR Antarctic Mass Trend (04/2002 - 08/2016): -125.47 +/-39.01 Gt/yr 
+HDR
+HDR If you use these data please cite:
+HDR Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2017) Antarctica Mass Variability Time Series Version 1 from JPL GRACE Mascon CRI Filtered. 
+HDR Ver. 1, PO.DAAC, CA, USA. Dataset accessed [YYYY-MM-DD] at http://dx.doi.org/10.5067/TEMSC-ANTS1.
+HDR
+HDR For information on how the data were generated please refer to:
+HDR Watkins, M. M., D. N. Wiese, D. -N. Yuan, C. Boening, and F. W. Landerer (2015), Improved methods for observing Earth's time variable
+HDR mass distribution with GRACE using spherical cap mascons, J. Geophys. Res. Solid Earth, 120, 2648_2671, doi: 10.1002/2014JB011547.
+HDR
+HDR column description
+HDR 1 TIME (year.decimal)
+HDR 2 Antarctic mass (Gigatonnes)
+HDR 2 Antarctic mass 1-sigma uncertainty (Gigatonnes)
+HDR
+HDR NOTES (1): Correction for Glacial Isostatic Adjustment (GIA) is from Ivins et al. (2013), doi:10.1002/jgrb.50208
+HDR            This GIA correction is different than what is applied in the official GRACE JPL RL05M.1 Solution
+HDR NOTES (2): Trend value is derived by performing a weighted least squares fit of an annual, semiannual, bias, and trend to the timeseries
+HDR NOTES (3): Monthly uncertainties are computed using measurement errors provided in the JPL RL05M.1 Solution and considering
+HDR            leakage errors in accordance with Wiese et al. (2016), doi:10.1002/2016WR019344
+HDR NOTES (4): The trend uncertainty provides a 1-sigma confidence interval. The calculation considers only the propagation of the monthly uncertainties
+HDR            into the trend, assumes uncorrelated observations, and includes GIA uncertainty according to Velicogna et al. (2013), doi:10.1002/grl.50527
+HDR
+HDR Header_End---------------------------------------
+2002.29       0.00     159.12
+2002.35      60.58     102.59
+2002.62    -177.93      88.76
+2002.71     165.86     102.80
+2002.79      31.78      66.49
+2002.87     -82.71      63.97
+2002.96     -52.76      65.81
+2003.04    -251.17      67.03
+2003.12    -169.50      53.15
+2003.20    -239.79      47.54
+2003.29    -146.41      47.53
+2003.36     -32.64      51.44
+2003.54    -141.94      39.65
+2003.62    -120.92      41.73
+2003.71     -50.83      41.77
+2003.79     -86.78      42.02
+2003.87    -109.33      42.50
+2003.96     -85.10      41.33
+2004.02    -219.59      45.71
+2004.13    -606.15      41.78
+2004.21    -324.08      39.41
+2004.29    -413.92      38.89
+2004.37     -99.83      39.34
+2004.46    -101.87      38.73
+2004.54    -333.24      35.10
+2004.62    -363.49      36.33
+2004.71    -288.59      37.08
+2004.79      75.25      33.99
+2004.87    -183.53      36.25
+2004.96    -230.19      35.05
+2005.04    -324.28      33.57
+2005.12    -380.25      35.20
+2005.20    -362.80      35.08
+2005.29    -277.74      34.55
+2005.37    -286.76      35.46
+2005.46    -198.61      35.69
+2005.54    -130.05      34.71
+2005.62    -343.12      34.79
+2005.71    -111.28      34.72
+2005.79    -122.33      33.98
+2005.87     -99.42      33.90
+2005.96    -138.99      39.43
+2006.04    -316.46      35.13
+2006.12    -341.12      35.78
+2006.20    -297.87      35.66
+2006.29    -308.44      35.91
+2006.37    -180.39      36.29
+2006.45    -155.59      38.71
+2006.54    -197.58      37.73
+2006.62       1.21      37.05
+2006.71     -13.13      39.00
+2006.79     -76.93      38.31
+2006.87    -164.90      38.44
+2006.96    -244.99      39.65
+2007.04    -452.04      40.14
+2007.12    -428.05      39.54
+2007.20    -454.50      39.50
+2007.29    -357.14      39.60
+2007.37     -72.06      39.37
+2007.45    -270.94      40.49
+2007.54    -297.71      39.22
+2007.62    -224.78      41.63
+2007.71    -200.18      40.40
+2007.79    -376.63      40.72
+2007.87    -469.83      41.88
+2007.96    -470.89      40.36
+2008.04    -716.16      39.93
+2008.12    -677.62      41.63
+2008.21    -661.65      40.72
+2008.29    -517.44      42.78
+2008.37    -520.81      41.18
+2008.46    -485.88      41.51
+2008.54    -766.45      42.08
+2008.62    -823.17      41.49
+2008.71    -541.42      41.64
+2008.79    -538.20      40.39
+2008.87    -478.78      41.14
+2008.96    -574.57      40.65
+2009.04    -684.09      39.96
+2009.12    -643.23      40.22
+2009.20    -594.14      39.74
+2009.29    -577.62      37.37
+2009.37    -574.42      37.28
+2009.46    -572.86      37.50
+2009.54    -548.96      38.12
+2009.62    -552.99      35.85
+2009.71    -546.27      34.28
+2009.79    -550.80      34.56
+2009.87    -590.29      33.71
+2009.96    -589.75      33.57
+2010.04    -847.89      33.00
+2010.12    -673.32      32.63
+2010.20    -623.87      34.85
+2010.29    -708.50      32.87
+2010.37    -730.31      33.73
+2010.45    -811.81      40.23
+2010.54   -1073.93      37.86
+2010.62    -955.65      36.41
+2010.71    -843.42      38.56
+2010.79    -938.25      40.78
+2010.87    -932.63      42.40
+2010.96    -792.11      43.83
+2011.13   -1034.61      46.19
+2011.20   -1088.21      44.67
+2011.29   -1140.00      44.37
+2011.37   -1020.07      43.54
+2011.55   -1038.54      46.74
+2011.62    -954.97      44.14
+2011.71    -830.76      43.08
+2011.79    -916.87      42.43
+2011.83    -613.94      43.17
+2012.00    -950.41      43.77
+2012.04   -1069.14      42.40
+2012.12   -1091.01      44.20
+2012.21   -1027.04      42.54
+2012.27   -1046.99      50.92
+2012.46   -1030.78      45.54
+2012.54   -1198.52      43.88
+2012.62    -989.64      42.12
+2012.70    -737.85      46.10
+2012.89    -809.94      47.50
+2012.96    -998.29      44.94
+2013.04   -1222.01      44.07
+2013.12   -1331.90      45.35
+2013.30   -1118.52      46.27
+2013.37    -996.71      41.52
+2013.46    -991.96      42.51
+2013.54   -1089.48      41.92
+2013.79   -1070.78      43.29
+2013.87   -1218.80      41.49
+2013.96   -1164.75      40.41
+2014.02   -1426.48      46.40
+2014.21   -1607.81      35.63
+2014.29   -1389.16      36.50
+2014.37   -1256.03      36.56
+2014.45   -1483.62      38.85
+2014.62   -1533.69      36.91
+2014.71   -1256.51      35.79
+2014.79   -1387.54      34.39
+2014.88   -1325.32      33.74
+2015.06   -1691.77      37.39
+2015.12   -1700.40      43.92
+2015.20   -1810.96      31.84
+2015.29   -1829.14      33.70
+2015.32   -1739.01      39.43
+2015.53   -1866.96      44.65
+2015.62   -1937.76      43.85
+2015.70   -1782.21      49.67
+2015.97   -1640.01      51.79
+2016.04   -1609.26      52.05
+2016.12   -1689.22      52.59
+2016.21   -1522.42      57.76
+2016.38   -1768.68      66.07
+2016.46   -1624.97      67.28
+2016.54   -1769.39      74.85
+2016.64   -1881.56     106.17
