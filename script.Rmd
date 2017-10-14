@@ -31,6 +31,9 @@ output:
 # Enable cache to compile page faster
 knitr::opts_chunk$set(cache=TRUE)
 
+# Display numbers up to 10 positions without showing the exponent
+options("scipen" = 10)
+
 # -----------------------------------
 # Global Functions
 # -----------------------------------
@@ -139,7 +142,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 # -----------------------------------
 
 # Set the url of the CRAN mirror
-cran_mirror <- "http://cran.rstudio.com/"
+# cran_mirror <- "http://cran.rstudio.com/"
 
 # Return and save the list of installed packages
 installed_packages <- installed.packages()
@@ -149,6 +152,7 @@ dependent_packages <- c("stats",
                         "dplyr",
                         "tidyr",
                         "ggplot2",
+                        "ggrepel",
                         "ggmap",
                         "viridis",
                         "scales",
@@ -156,7 +160,7 @@ dependent_packages <- c("stats",
 
 for(package in dependent_packages){
   if (is.element(package, installed_packages[,"Package"]) == FALSE) {
-    install.packages(package, repos = cran_mirror)
+    install.packages(package) #, repos = cran_mirror)
   }
   library(package, character.only = TRUE)
 }
@@ -235,39 +239,41 @@ https://www.epa.gov/climate-indicators/climate-change-indicators-atmospheric-con
 
 The main argument for climate change revolves around the increase in the atmosphere's carbon dioxide (CO~2~) concentrations. The scientific model for climate change indicates that main cause of the current global warming trend is human expansion of the "greenhouse effect" - warming that results when the atmosphere traps heat radiating from Earth toward space.[^5]
 
+<!--
 <p>&nbsp;</p>
 
 ``` {r co2_human_sources}
-# Generate a data frame with the following data
-# Data Source: Main sources of carbon dioxide emissions, [http://whatsyourimpact.org/greenhouse-gases/carbon-dioxide-emissions]
-co2_human_sources <- tbl_df(data.frame("Source" = c("Burning Fossil Fuels",
-                                                    "Land Use Changes",
-                                                    "Industrial Processes"),
-                                        "Percent" = c(0.87, 0.09, 0.04)))
+## Generate a data frame with the following data
+## Data Source: Main sources of carbon dioxide emissions, #[http://whatsyourimpact.org/greenhouse-gases/carbon-dioxide-emissions]
+#co2_human_sources <- tbl_df(data.frame("Source" = c("Burning Fossil Fuels",
+#                                                    "Land Use Changes",
+#                                                    "Industrial Processes"),
+#                                        "Percent" = c(0.87, 0.09, 0.04)))
 
-# Render pie chart
-co2_human_sources_plot <- co2_human_sources %>%
-  ggplot(aes(x = "", y = (Percent * 100), fill = Source)) +
-  geom_bar(width = 1, stat = "identity") +
-  coord_polar("y", start = 0) +
-  theme(panel.background = element_rect(fill='white', colour='white')) +
-  labs(y = "Percent", x = "") +
-  scale_fill_viridis(discrete = TRUE)
+## Render pie chart
+#co2_human_sources_plot <- co2_human_sources %>%
+#  ggplot(aes(x = "", y = (Percent * 100), fill = Source)) +
+#  geom_bar(width = 1, stat = "identity") +
+#  coord_polar("y", start = 0) +
+#  theme(panel.background = element_rect(fill='white', colour='white')) +
+#  labs(y = "Percent", x = "") +
+#  scale_fill_viridis(discrete = TRUE)
 ```
 
 
 <div class="row">
 <div class="col-md-6" style="padding-top: 30px;">
 ``` {r co2_human_sources_plot, fig.width = 4, fig.height = 2, echo = FALSE}
-co2_human_sources_plot
+#co2_human_sources_plot
 ```
 </div>
 <div class="col-md-6">
-<p>&nbsp;</p>CO~2~ is naturally released into the atmosphere from animal respiration and volcanic eruptions. Humans have increased CO~2~ release through deforestation, land use changes, and burning of fossil fuels.[^6]
+-->
+CO~2~ is naturally released into the atmosphere from animal respiration and volcanic eruptions. Humans have increased CO~2~ release through deforestation, land use changes, and burning of fossil fuels.[^6]
 
 87 percent of all human-produced carbon dioxide emissions come from the burning of fossil fuels like coal, natural gas and oil. The remainder results from the clearing of forests and other land use changes (9%), as well as some industrial processes such as cement manufacturing (4%).[^7]
-</div>
-</div>
+<!-- </div> -->
+<!-- </div> -->
 
 The largest human source of carbon dioxide emissions is from the combustion of fossil fuels. Burning these fuels releases energy which is most commonly turned into heat, electricity or power for transportation. Some examples of where they are used are in power plants, cars, planes and industrial facilities. In 2011, fossil fuel use created 33.2 billion tonnes of carbon dioxide emissions worldwide.[^8]
 
@@ -727,7 +733,7 @@ deforestation_data_plot
 <p>&nbsp;</p>
 
 
-### GDP vs CO~2~ Output
+### Forest Area vs CO~2~ Output
 [http://data.worldbank.org/](http://data.worldbank.org/)
 
 Using data from the World Bank, we can correlate deforestation with CO~2~ emissions with the GDP of various countries, in order to show how these factors are directly related and affect each other.
@@ -735,9 +741,10 @@ Using data from the World Bank, we can correlate deforestation with CO~2~ emissi
 
 ``` {r world_bank_data, warning = FALSE}
 
-world_bank_forest_area_gdp_cleanup <- function(forest_area_data,
+world_bank_forest_area_gdp_co2_cleanup <- function(forest_area_data,
                                                gdp_data,
-                                               co2_data){
+                                               co2_data,
+                                               energy_data){
   
   result <- tryCatch({
     
@@ -780,34 +787,55 @@ world_bank_forest_area_gdp_cleanup <- function(forest_area_data,
     # Set 'Year' column to numeric data type
     co2_data$Year <- as.numeric(co2_data$Year)
     
+    
+    
+    # Return columns 1 to 2, and 35 to 60
+    energy_data <- energy_data[,c(1:2,35:60)]
+    # Rename column 1 title to 'Country'
+    names(energy_data)[1] <- "Country"
+    # Rename column 2 title to 'Code'
+    names(energy_data)[2] <- "Code"
+    
+    # Gather columns 3 to 28 into 'Year' discrete column,
+    # and 'Area' continuous column
+    energy_data <- energy_data %>% gather("Year", "Energy", c(3:28))
+    # Set 'Year' column to numeric data type
+    energy_data$Year <- as.numeric(energy_data$Year)
+    
+    
+    
     # Collate the 4th columns of the gdp_data and co2_data datasets
     # into the forest_area_data dataset
     forest_area_data[,5] <- gdp_data[,4]
     forest_area_data[,6] <- co2_data[,4]
+    forest_area_data[,7] <- energy_data[,4]
     # Rename column 5 title of forest_area_data to 'GDP'
     names(forest_area_data)[5] <- "GDP"
     # Rename column 6 title of forest_area_data to 'CO2'
     names(forest_area_data)[6] <- "CO2"
+    # Rename column 6 title of forest_area_data to 'Energy'
+    names(forest_area_data)[7] <- "Energy"
     
     return(forest_area_data)
     
   }, warnings = function(e){
-    
+
     print("Unfortunately the forest area data couldn't be cleaned: ", e)
-    
+
     return(FALSE)
-    
+
   }, error = function(e){
-    
+
     print("Unfortunately the forest area data couldn't be cleaned: ", e)
-    
+
     return(FALSE)
-    
+
   })
   
   return (result)
 }
 
+countries_only_code_vector <- c("AFG","ALA","ALB","DZA","ASM","AND","AGO","AIA","ATA","ATG","ARG","ARM","ABW","AUS","AUT","AZE","BHS","BHR","BGD","BRB","BLR","BEL","BLZ","BEN","BMU","BTN","BOL","BIH","BWA","BVT","BRA","VGB","IOT","BRN","BGR","BFA","BDI","KHM","CMR","CAN","CPV","CYM","CAF","TCD","CHL","CHN","HKG","MAC","CXR","CCK","COL","COM","COG","COD","COK","CRI","CIV","HRV","CUB","CYP","CZE","DNK","DJI","DMA","DOM","ECU","EGY","SLV","GNQ","ERI","EST","ETH","FLK","FRO","FJI","FIN","FRA","GUF","PYF","ATF","GAB","GMB","GEO","DEU","GHA","GIB","GRC","GRL","GRD","GLP","GUM","GTM","GGY","GIN","GNB","GUY","HTI","HMD","VAT","HND","HUN","ISL","IND","IDN","IRN","IRQ","IRL","IMN","ISR","ITA","JAM","JPN","JEY","JOR","KAZ","KEN","KIR","PRK","KOR","KWT","KGZ","LAO","LVA","LBN","LSO","LBR","LBY","LIE","LTU","LUX","MKD","MDG","MWI","MYS","MDV","MLI","MLT","MHL","MTQ","MRT","MUS","MYT","MEX","FSM","MDA","MCO","MNG","MNE","MSR","MAR","MOZ","MMR","NAM","NRU","NPL","NLD","ANT","NCL","NZL","NIC","NER","NGA","NIU","NFK","MNP","NOR","OMN","PAK","PLW","PSE","PAN","PNG","PRY","PER","PHL","PCN","POL","PRT","PRI","QAT","REU","ROU","RUS","RWA","BLM","SHN","KNA","LCA","MAF","SPM","VCT","WSM","SMR","STP","SAU","SEN","SRB","SYC","SLE","SGP","SVK","SVN","SLB","SOM","ZAF","SGS","SSD","ESP","LKA","SDN","SUR","SJM","SWZ","SWE","CHE","SYR","TWN","TJK","TZA","THA","TLS","TGO","TKL","TON","TTO","TUN","TUR","TKM","TCA","TUV","UGA","UKR","ARE","GBR","UMI","URY","UZB","VUT","VEN","VNM","VIR","WLF","ESH","YEM","ZMB","ZWE")
 
 world_bank_forest_area_filename <- "./data/API_AG.LND.FRST.K2_DS2_en_csv_v2.csv"
 world_bank_forest_area_data <- load_data(
@@ -834,37 +862,100 @@ world_bank_co2_data <- load_data(
                           skipLines = 4
                         )
 
+world_bank_energy_filename <- "./data/API_EG.USE.PCAP.KG.OE_DS2_en_csv_v2.csv"
+world_bank_energy_data <- load_data(
+                          world_bank_energy_filename,
+                          delimiter = ",",
+                          skipLines = 4
+                        )
+
 world_bank_combined_data <-
-  world_bank_forest_area_gdp_cleanup(world_bank_forest_area_data,
+  world_bank_forest_area_gdp_co2_cleanup(world_bank_forest_area_data,
                                      world_bank_gdp_data,
-                                     world_bank_co2_data)
+                                     world_bank_co2_data,
+                                     world_bank_energy_data)
 ```
 
-<!--
-#### Forest Area vs CO2 Emissions, Brazil | Years 1990 to 2015
 
-``` {r fig.width = 8, fig.height = 4, warning = FALSE}
-#if(typeof(world_bank_combined_data) == "list"){
-#  world_bank_combined_data %>%
-#    subset(
-#      #Code %in% c("BRA")
-#      #Code %in% c("COL", "VEN", "BOL", "MEX", "PER", "IDN", "SDN", "NGA", "USA")
-#      Code %in% c("LCN", "ECA", "RUS", "SSF", "NAC")
-#    ) %>%
-#    ggplot() +
-#    geom_line(position = "jitter",
-#              aes(x = Year,
-#                  y = Area,
-#                  col = as.factor(Code),
-#                  group = Code,
-#                  size = CO2)) +
-#    labs(y = expression("Forest Area 1e"^12*" m"^2),
-#         size = expression("CO"^2),
-#         col = "Country") +
-#    scale_color_viridis(discrete = TRUE)
-#}
+#### Forest Area vs CO2 Emissions, Latin America and the Carribean | Years 1990 to 2015
+
+``` {r warning = FALSE}
+
+if(typeof(world_bank_combined_data) == "list"){
+ world_bank_combined_data_plot <- world_bank_combined_data %>%
+   subset(
+     Code %in% c("LCN")
+     # Code %in% c("COL", "VEN", "BOL", "MEX", "PER", "IDN", "SDN", "NGA", "USA")
+     # Code %in% c("LCN", "ECA", "RUS", "SSF", "NAC")
+   ) %>%
+   ggplot() +
+   geom_line(position = "jitter",
+             aes(x = Year,
+                 y = Area,
+                 col = as.factor(Code),
+                 group = Code,
+                 size = CO2)) +
+   labs(y = expression("Forest Area 1e"^12*" m"^2),
+        size = expression("CO"^2),
+        col = "Country") +
+   scale_color_viridis(discrete = TRUE)
+}
 ```
--->
+
+<div class="row"><div class="col-xs-10 col-xs-offset-1">
+``` {r world_bank_combined_data_plot, fig.width = 8, fig.height = 4, warning = FALSE, echo = FALSE}
+world_bank_combined_data_plot
+```
+</div></div>
+
+
+#### GDP vs CO2 Emissions, All Countries | Years 1990 to 2015
+
+``` {r warning = FALSE}
+
+if(typeof(world_bank_combined_data) == "list"){
+  world_bank_combined_data_aggregate <- 
+    aggregate(x=world_bank_combined_data[c("Area", "GDP", "CO2")],
+              by=world_bank_combined_data[c("Country", "Code")],
+              FUN=sum,
+              na.rm=TRUE,
+              na.action=NULL)
+  
+  world_bank_combined_data_aggregate <- subset(world_bank_combined_data_aggregate,
+     # Code %in% c("LCN")
+     # Code %in% c("COL", "VEN", "BOL", "MEX", "PER", "IDN", "SDN", "NGA", "USA")
+     # Code %in% c("LCN", "ECA", "RUS", "SSF", "NAC")
+     Code %in% countries_only_code_vector
+   )
+  
+  world_bank_combined_data_aggregate_lm <- lm(GDP ~ CO2, data = world_bank_combined_data_aggregate)
+
+  world_bank_combined_data_aggregate_plot <- world_bank_combined_data_aggregate %>%
+   ggplot(aes(x = CO2, y = GDP)) +
+   geom_point(aes(col = as.factor(Code),
+                 group = Code,
+                 size = Area)) +
+   geom_smooth(method = "lm", col = "red", se = TRUE) +
+   geom_text_repel(data = subset(world_bank_combined_data_aggregate,
+                           # GDP > 40000000 & CO2 > 4000000),
+                           Area > 5000000),
+             aes(CO2, GDP, label = Country)) +
+   labs(y = expression(CO[2]*" Emissions (kt)"),
+        size = expression("Forest Area 1e"^12*" m"^2),
+        col = "Country") +
+   scale_x_log10() +
+   scale_y_log10() +
+   guides(col = FALSE)
+   # scale_color_viridis() #discrete = TRUE)
+}
+
+```
+
+<div class="row"><div class="col-xs-10 col-xs-offset-1">
+``` {r world_bank_combined_data_aggregate_plot, fig.width = 12, fig.height = 8, warning = FALSE, echo = FALSE}
+world_bank_combined_data_aggregate_plot
+```
+</div></div>
 
 <p>&nbsp;</p>
 
@@ -904,7 +995,6 @@ co2_gdp_brazil
 </div></div>
 
 <p>&nbsp;</p>
--->
 
 
 ### CO~2~ Emissions vs GDP, Various Countries | Years 1990 to 2015

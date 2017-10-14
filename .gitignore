@@ -6,6 +6,7 @@
 Thumbs.db
 .Rhistory
 .RData
+.RDataTmp
 raw_data/
 .Rproj.user/
 scratchpad.R
