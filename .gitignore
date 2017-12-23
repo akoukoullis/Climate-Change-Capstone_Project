@@ -21,3 +21,4 @@ script_files/
 *.zip
 map_test.R
 heat.png
+script_with_industrialisation_and_multiplots.Rmd
