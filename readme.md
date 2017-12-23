@@ -1,5 +1,5 @@
-#Foundations of Data Science#
-##Capstone Project - Analysis of Climate Change##
+# Foundations of Data Science #
+## Capstone Project - Analysis of Climate Change ##
 
 _Author: Anthony Koukoullis_
 
