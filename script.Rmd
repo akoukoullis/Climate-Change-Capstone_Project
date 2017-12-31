@@ -85,22 +85,21 @@ load_data <- function(filename,
   return(result)
 }
 
-
+# -----------------------------------
+# Multiple plot function
+# -----------------------------------
+# URL: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+#
+# ggplot objects can be passed in ..., or to plotlist
+# (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+# -----------------------------------
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-  # -----------------------------------
-  # Multiple plot function
-  # -----------------------------------
-  # URL: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
-  #
-  # ggplot objects can be passed in ..., or to plotlist
-  # (as a list of ggplot objects)
-  # - cols:   Number of columns in layout
-  # - layout: A matrix specifying the layout. If present, 'cols' is ignored.
-  #
-  # If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
-  # then plot 1 will go in the upper left, 2 will go in the upper right, and
-  # 3 will go all the way across the bottom.
-  # -----------------------------------
 
   # Make a list from the ... arguments and plotlist
   plots <- c(list(...), plotlist)
@@ -148,11 +147,43 @@ correct_colnames <- function(df) {
   return(df)
 }
 
+
 gmean <- function(x, na.rm=TRUE){
   exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
 }
 
-countries_only_code_vector <- c("AFG","ALA","ALB","DZA","ASM","AND","AGO","AIA","ATA","ATG","ARG","ARM","ABW","AUS","AUT","AZE","BHS","BHR","BGD","BRB","BLR","BEL","BLZ","BEN","BMU","BTN","BOL","BIH","BWA","BVT","BRA","VGB","IOT","BRN","BGR","BFA","BDI","KHM","CMR","CAN","CPV","CYM","CAF","TCD","CHL","CHN","HKG","MAC","CXR","CCK","COL","COM","COG","COD","COK","CRI","CIV","HRV","CUB","CYP","CZE","DNK","DJI","DMA","DOM","ECU","EGY","SLV","GNQ","ERI","EST","ETH","FLK","FRO","FJI","FIN","FRA","GUF","PYF","ATF","GAB","GMB","GEO","DEU","GHA","GIB","GRC","GRL","GRD","GLP","GUM","GTM","GGY","GIN","GNB","GUY","HTI","HMD","VAT","HND","HUN","ISL","IND","IDN","IRN","IRQ","IRL","IMN","ISR","ITA","JAM","JPN","JEY","JOR","KAZ","KEN","KIR","PRK","KOR","KWT","KGZ","LAO","LVA","LBN","LSO","LBR","LBY","LIE","LTU","LUX","MKD","MDG","MWI","MYS","MDV","MLI","MLT","MHL","MTQ","MRT","MUS","MYT","MEX","FSM","MDA","MCO","MNG","MNE","MSR","MAR","MOZ","MMR","NAM","NRU","NPL","NLD","ANT","NCL","NZL","NIC","NER","NGA","NIU","NFK","MNP","NOR","OMN","PAK","PLW","PSE","PAN","PNG","PRY","PER","PHL","PCN","POL","PRT","PRI","QAT","REU","ROU","RUS","RWA","BLM","SHN","KNA","LCA","MAF","SPM","VCT","WSM","SMR","STP","SAU","SEN","SRB","SYC","SLE","SGP","SVK","SVN","SLB","SOM","ZAF","SGS","SSD","ESP","LKA","SDN","SUR","SJM","SWZ","SWE","CHE","SYR","TWN","TJK","TZA","THA","TLS","TGO","TKL","TON","TTO","TUN","TUR","TKM","TCA","TUV","UGA","UKR","ARE","GBR","UMI","URY","UZB","VUT","VEN","VNM","VIR","WLF","ESH","YEM","ZMB","ZWE")
+
+countries_only_code_vector <- c("AFG","ALA","ALB","DZA","ASM","AND","AGO","AIA",
+                                "ATA","ATG","ARG","ARM","ABW","AUS","AUT","AZE",
+                                "BHS","BHR","BGD","BRB","BLR","BEL","BLZ","BEN",
+                                "BMU","BTN","BOL","BIH","BWA","BVT","BRA","VGB",
+                                "IOT","BRN","BGR","BFA","BDI","KHM","CMR","CAN",
+                                "CPV","CYM","CAF","TCD","CHL","CHN","HKG","MAC",
+                                "CXR","CCK","COL","COM","COG","COD","COK","CRI",
+                                "CIV","HRV","CUB","CYP","CZE","DNK","DJI","DMA",
+                                "DOM","ECU","EGY","SLV","GNQ","ERI","EST","ETH",
+                                "FLK","FRO","FJI","FIN","FRA","GUF","PYF","ATF",
+                                "GAB","GMB","GEO","DEU","GHA","GIB","GRC","GRL",
+                                "GRD","GLP","GUM","GTM","GGY","GIN","GNB","GUY",
+                                "HTI","HMD","VAT","HND","HUN","ISL","IND","IDN",
+                                "IRN","IRQ","IRL","IMN","ISR","ITA","JAM","JPN",
+                                "JEY","JOR","KAZ","KEN","KIR","PRK","KOR","KWT",
+                                "KGZ","LAO","LVA","LBN","LSO","LBR","LBY","LIE",
+                                "LTU","LUX","MKD","MDG","MWI","MYS","MDV","MLI",
+                                "MLT","MHL","MTQ","MRT","MUS","MYT","MEX","FSM",
+                                "MDA","MCO","MNG","MNE","MSR","MAR","MOZ","MMR",
+                                "NAM","NRU","NPL","NLD","ANT","NCL","NZL","NIC",
+                                "NER","NGA","NIU","NFK","MNP","NOR","OMN","PAK",
+                                "PLW","PSE","PAN","PNG","PRY","PER","PHL","PCN",
+                                "POL","PRT","PRI","QAT","REU","ROU","RUS","RWA",
+                                "BLM","SHN","KNA","LCA","MAF","SPM","VCT","WSM",
+                                "SMR","STP","SAU","SEN","SRB","SYC","SLE","SGP",
+                                "SVK","SVN","SLB","SOM","ZAF","SGS","SSD","ESP",
+                                "LKA","SDN","SUR","SJM","SWZ","SWE","CHE","SYR",
+                                "TWN","TJK","TZA","THA","TLS","TGO","TKL","TON",
+                                "TTO","TUN","TUR","TKM","TCA","TUV","UGA","UKR",
+                                "ARE","GBR","UMI","URY","UZB","VUT","VEN","VNM",
+                                "VIR","WLF","ESH","YEM","ZMB","ZWE")
 
 south_american_countries_code_vector <- c("ARG", "BOL", "BRA", "CHL", "COL", "ECU", "GUY", "PRY", "PER", "SUR", "URY", "VEN")
 central_american_countries_code_vector <- c("BLZ", "CRI", "SLV", "GTM", "HND", "MEX", "NIC", "PAN")
@@ -175,7 +206,6 @@ dependent_packages <- c("stats",
                         "dplyr",
                         "tidyr",
                         "ggplot2",
-                        "ggrepel",
                         "ggmap",
                         "viridis",
                         "lubridate",
@@ -194,7 +224,7 @@ for(package in dependent_packages){
 # Set the full path of your RStudio working directory to the "local_working_dir"
 # variable if necessary
 # -----------------------------------
-local_working_dir <- "~/Documents/Springboard\ Foundations\ of\ Data\ Science/Capstone/Climate\ Change/"
+local_working_dir <- file.path("~", "Documents", "Springboard\ Foundations\ of\ Data\ Science", "Capstone", "Climate\ Change/");
 
 setwd(local_working_dir)
 
@@ -264,7 +294,7 @@ The data behind these greenhouse gases will be explored in the following section
 <p>&nbsp;</p>
 
 ## Greenhouse Gases
-### Global Atmospheric Concentrations of Carbon Dioxide Over Time  |  Years 800,000 BCE to 2015 CE 
+### Global Atmospheric Concentrations of Carbon Dioxide Over Time | Years 800,000 BCE to 2015 CE 
 https://www.epa.gov/climate-indicators/climate-change-indicators-atmospheric-concentrations-greenhouse-gases
 
 The main argument for climate change revolves around the increase in the atmosphere's carbon dioxide (CO~2~) concentrations. The scientific model for climate change indicates that main cause of the current global warming trend is human expansion of the "greenhouse effect" - warming that results when the atmosphere traps heat radiating from Earth toward space.[^5]
@@ -301,7 +331,7 @@ Using ice core samples for ancient measurements, the plot of the atmospheric con
 
 The break in the cycle occurred in 1909, when the atmospheric CO~2~ concentrations increased past 298.6 parts per million (ppm), which was the maximum concentration measured from the entire period until that year (actually measured for the year 330,969 BCE). From 1909 until present day, the concentration has continued to rise ceaselessly, and is currently at 400.83 ppm for the year 2015.
 
-The scientific reasoning behind this observation is that the human industrial activities outlined above have finally expended more CO~2~ into the atmosphere than the Earth's natural carbon cycle can process, leading to a runaway 'Greenhouse Effect' which is leading to the catastrophic effects listed in the following section.
+The scientific reasoning behind this observation is that the human industrial activities outlined above have finally expended more CO~2~ into the atmosphere than the Earth's natural carbon cycle can process, leading to a runaway 'Greenhouse Effect' which is leading to the catastrophic effects listed in the following section.[^37]
 
 <p>&nbsp;</p>
 
@@ -348,13 +378,32 @@ atm_conc_co2_plot_fn <- function(atm_conc_co2_data){
   atm_conc_co2_plot <- atm_conc_co2_data %>%
     ggplot(aes(x = Year, y = GlobalMeanCO2, group = 1, col = GlobalMeanCO2)) +
     geom_line(aes(group=1), size = 0.7, na.rm = TRUE) +
-    scale_x_continuous(name="Year", labels = comma) +
-    geom_vline(xintercept=0, linetype = 2, col = "red") +
+    scale_x_continuous(name = "Year", labels = comma,
+                       breaks = c(-800000, -600000, -400000, -200000, 1)) +
+    geom_vline(xintercept=1, linetype = 2, col = "red") +
     annotate("text", x=-40000, y=400, label= "BCE") +
     annotate("text", x=30000, y=400, label= "CE") +
     labs(
-      title = "Global Atmospheric Concentrations of Carbon Dioxide Over Time",
-      y = expression("Global Mean of CO"^2*" Concentration"),
+      title = expression(paste("Global Atmospheric Concentrations of CO"[2],
+                               " Over Time | Years 800,000 BCE to 2015 CE")),
+      y = expression(paste("Global Mean of CO"[2], " Concentration")),
+      color = "Conc (ppm)") +
+    scale_color_viridis()
+  
+  return(atm_conc_co2_plot)
+}
+
+atm_conc_co2_plot_2_fn <- function(atm_conc_co2_data){
+  
+  # Generate the plot of the dataframe as a line chart
+  atm_conc_co2_plot <- atm_conc_co2_data %>%
+    ggplot(aes(x = Year, y = GlobalMeanCO2, group = 1, col = GlobalMeanCO2)) +
+    geom_line(aes(group=1), size = 1, na.rm = TRUE) +
+    scale_x_continuous(name = "Year") +
+    labs(
+      title = expression(paste("Global Atmospheric Concentrations of CO"[2],
+                               " Over Time | Years 1800 to 2015")),
+      y = expression(paste("Global Mean of CO"[2], " Concentration")),
       color = "Conc (ppm)") +
     scale_color_viridis()
   
@@ -366,6 +415,8 @@ atm_conc_co2_data <- atm_conc_co2_cleanup_fn(
   load_data("./data/ghg-concentrations_fig-1.csv", skipLines = 6))
 
 atm_conc_co2_plot <- atm_conc_co2_plot_fn(atm_conc_co2_data)
+
+atm_conc_co2_plot_2 <- atm_conc_co2_plot_2_fn(atm_conc_co2_data %>% filter(Year >= 1760))
 ```
 
 <p>&nbsp;</p>
@@ -377,13 +428,22 @@ atm_conc_co2_plot
 ```
 </div></div>
 
+The following chart shows a much more recent snapshot of the the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
+
+<div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
+``` {r atm_conc_co2_plot_2, fig.width = 8, fig.height = 4, echo = FALSE}
+# Display the plot object
+atm_conc_co2_plot_2
+```
+</div></div>
+
 ***
 <p>&nbsp;</p>
 
-### Global Atmospheric Concentrations of Methane Over Time  |  Years 800,000 BCE to 2015 CE 
+### Global Atmospheric Concentrations of Methane Over Time | Years 800,000 BCE to 2015 CE 
 https://www.epa.gov/climate-indicators/climate-change-indicators-atmospheric-concentrations-greenhouse-gases
 
-Methane is a gas that is naturally emitted by natural sources such as wetlands, as well as human activities such as leakage from natural gas systems and the raising of livestock. Methane's lifetime in the atmosphere is much shorter than CO~2~'s, however it is up to 25 times more efficient than CO~2~ in retaining heat in the atmosphere. As the food livestock industry grows to accommodate an ever-expanding human population, the output of methane from animal waste alone is causing a sharp rise in methane in the atmosphere.[^13]
+Methane is a gas that is naturally emitted by natural sources such as wetlands, as well as human activities such as leakage from natural gas systems and the raising of livestock. Methane's lifetime in the atmosphere is much shorter than CO~2~'s, however it is up to 25 times more efficient than CO~2~ in retaining heat in the atmosphere. As the food livestock industry grows to accommodate an ever-expanding human population, the output of methane from animal waste alone is causing a sharp rise in methane in the atmosphere. The concentration of methane in the atmosphere has more than doubled since preindustrial times.[^13]
 
 <p>&nbsp;</p>
 
@@ -414,12 +474,32 @@ atm_conc_methane_plot_fn <- function(atm_conc_methane_data){
                group = 1,
                color = GlobalMeanMethane)) +
     geom_line(aes(group=1), size = 0.7, na.rm = TRUE) +
-    scale_x_continuous(name="Year", labels = comma) +
-    geom_vline(xintercept=0, linetype = 2, col = "red") +
+    scale_x_continuous(name="Year", labels = comma,
+                       breaks = c(-800000, -600000, -400000, -200000, 1)) +
+    geom_vline(xintercept=1, linetype = 2, col = "red") +
     annotate("text", x=-40000, y=1800, label= "BCE") +
     annotate("text", x=30000, y=1800, label= "CE") +
-    labs(title = "Global Atmospheric Concentrations of Methane Over Time",
-         y = "Global Mean of Methane Concentration (ppb)",
+    labs(title = expression(paste("Global Atmospheric Concentrations of CH"[4], 
+                                  " Over Time | Years 800,000 BCE to 2015 CE")),
+         y = expression(paste("Global Mean of CH"[4], " Concentration (ppb)")),
+         color = "Conc (ppb)") +
+    scale_color_viridis()
+  
+  return(atm_conc_methane_plot)
+}
+
+atm_conc_methane_plot_2_fn <- function(atm_conc_methane_data){
+  # Generate the plot of the dataframe as a line chart
+  atm_conc_methane_plot <- atm_conc_methane_data %>%
+    ggplot(aes(x = Year,
+               y = GlobalMeanMethane,
+               group = 1,
+               color = GlobalMeanMethane)) +
+    geom_line(aes(group=1), size = 1, na.rm = TRUE) +
+    scale_x_continuous(name="Year") +
+    labs(title = expression(paste("Global Atmospheric Concentrations of CH"[4], " Over Time",
+                       " | Years 1800 to 2015")),
+         y = expression(paste("Global Mean of CH"[4], " Concentration (ppb)")),
          color = "Conc (ppb)") +
     scale_color_viridis()
   
@@ -431,6 +511,8 @@ atm_conc_methane_data <- atm_conc_methane_cleanup_fn(
   load_data("./data/ghg-concentrations_fig-2.csv", skipLines = 7))
 
 atm_conc_methane_plot <- atm_conc_methane_plot_fn(atm_conc_methane_data)
+
+atm_conc_methane_plot_2 <- atm_conc_methane_plot_2_fn(atm_conc_methane_data %>% filter(Year >= 1760))
 ```
 
 <p>&nbsp;</p>
@@ -446,19 +528,28 @@ atm_conc_methane_plot
 ```
 </div></div>
 
+The following chart shows a much more recent snapshot of the the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
+
+<div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
+``` {r atm_conc_methane_plot_2, fig.width = 8, fig.height = 4, echo = FALSE}
+# Display the plot object
+atm_conc_methane_plot_2
+```
+</div></div>
+
 <p>&nbsp;</p>
 
 ***
 <p>&nbsp;</p>
 
-### Global Atmospheric Concentrations of Nitrous Oxide Over Time  |  Years 800,000 BCE to 2015 CE 
+### Global Atmospheric Concentrations of Nitrous Oxide Over Time | Years 800,000 BCE to 2015 CE 
 https://www.epa.gov/climate-indicators/climate-change-indicators-atmospheric-concentrations-greenhouse-gases
 
 Nitrous oxide (NO) is naturally present in the atmosphere as part of the Earth's nitrogen cycle, and has a variety of natural sources, such as soils under natural vegetation and the oceans. Natural sources create 62% of total emissions.[^14]
 
-From the beginning of the industrial age until present day, human activities have nearly doubled the natural levels of NO in the atmosphere. In 2015, nitrous oxide (N2O) accounted for about 5 percent of all U.S. greenhouse gas emissions from human activities.[^15]
+From the beginning of the industrial age until present day, human activities have nearly doubled the natural levels of NO in the atmosphere. In 2015, nitrous oxide (NO) accounted for about 5 percent of all U.S. greenhouse gas emissions from human activities.[^15]
 
-Activities such as agriculture, fossil fuel combustion, wastewater management, and industrial processes are increasing the amount of N2O in the atmosphere. Nitrous oxide molecules stay in the atmosphere for an average of 114 years before being removed by a sink or destroyed through chemical reactions. The impact of N2O on warming the atmosphere is almost 300 times that of CO~2~.[^16]
+Activities such as agriculture, fossil fuel combustion, wastewater management, and industrial processes are increasing the amount of NO in the atmosphere. Nitrous oxide molecules stay in the atmosphere for an average of 114 years before being removed by a sink or destroyed through chemical reactions. The impact of NO on warming the atmosphere is almost 300 times that of CO~2~.[^16]
 
 <p>&nbsp;</p>
 
@@ -476,7 +567,8 @@ atm_conc_no_cleanup_fn <- function(atm_conc_no_data){
   # Set Year column as a numeric type
   atm_conc_no_data$Year <- as.numeric(as.character(atm_conc_no_data$Year))
   # Create new column and popupate it with the mean of of the values in columns 2 to 7
-  atm_conc_no_data$GlobalMeanNitrousOxide <- rowMeans(atm_conc_no_data[, 2:7], na.rm = TRUE)
+  atm_conc_no_data$GlobalMeanNitrousOxide <- rowMeans(atm_conc_no_data[, 2:7],
+                                                      na.rm = TRUE)
   # Return columns 1 and 8 only
   atm_conc_no_data <- atm_conc_no_data[, c(1, 8)]
   
@@ -492,11 +584,31 @@ atm_conc_no_plot_fn <- function(atm_conc_no_data){
                group = 1, 
                color = GlobalMeanNitrousOxide)) +
     geom_line(aes(group=1), size = 0.7, na.rm = TRUE) +
-    scale_x_continuous(name="Year", labels = comma) +
+    scale_x_continuous(name="Year", labels = comma,
+                       breaks = c(-800000, -600000, -400000, -200000, 1)) +
     geom_vline(xintercept=0, linetype = 2, col = "red") +
     annotate("text", x=-40000, y=400, label= "BCE") +
     annotate("text", x=30000, y=400, label= "CE") +
-    labs(title = "Global Atmospheric Concentrations of Nitrous Oxide Over Time",
+    labs(title = paste("Global Atmospheric Concentrations of NO Over Time",
+                       " | Years 800,000 BCE to 2015 CE"),
+         y = "Global Mean of Nitrous Oxide") +
+    scale_color_viridis()
+  
+  return(atm_conc_no_plot)
+}
+
+atm_conc_no_plot_2_fn <- function(atm_conc_no_data){
+
+  # Generate the plot of the dataframe as a line chart
+  atm_conc_no_plot <- atm_conc_no_data %>%
+    ggplot(aes(x = Year, 
+               y = GlobalMeanNitrousOxide, 
+               group = 1, 
+               color = GlobalMeanNitrousOxide)) +
+    geom_line(aes(group=1), size = 0.7, na.rm = TRUE) +
+    scale_x_continuous(name="Year") +
+    labs(title = paste("Global Atmospheric Concentrations of NO Over Time",
+                       " | Years 1800 to 2015"),
          y = "Global Mean of Nitrous Oxide") +
     scale_color_viridis()
   
@@ -508,11 +620,13 @@ atm_conc_no_data <- atm_conc_no_cleanup_fn(
   load_data("./data/ghg-concentrations_fig-3.csv", skipLines = 7))
 
 atm_conc_no_plot <- atm_conc_no_plot_fn(atm_conc_no_data)
+
+atm_conc_no_plot_2 <- atm_conc_no_plot_2_fn(atm_conc_no_data %>% filter(Year >= 1760))
 ```
 
 <p>&nbsp;</p>
 
-The plot below shows the concentration of NO in the atmosphere from 800,000 BCE to 2015 CE, using ice core samples for ancient measurements. The pattern shows a natural cycle over time, which repeats quite consistently over the period. The break in the cycle occurred in 1871, when the atmospheric methane concentrations increased past 303.3 parts per trillion (ppt), which was the maximum concentration measured from the entire period until that year (actually measured for the year 330,925 BCE). From 1471 until present day, the concentration has continued to rise ceaselessly, and is currently at 328.18 ppt for the year 2015.
+The plot below shows the concentration of NO in the atmosphere from 800,000 BCE to 2015 CE, using ice core samples for ancient measurements. The pattern shows a natural cycle over time, which repeats quite consistently over the period. The break in the cycle occurred in 1871, when the atmospheric NO concentrations increased past 303.3 parts per trillion (ppt), which was the maximum concentration measured from the entire period until that year (actually measured for the year 330,925 BCE). From 1471 until present day, the concentration has continued to rise ceaselessly, and is currently at 328.18 ppt for the year 2015.
 
 <p>&nbsp;</p>
 
@@ -520,6 +634,15 @@ The plot below shows the concentration of NO in the atmosphere from 800,000 BCE 
 ``` {r atm_conc_no_plot, fig.width = 8, fig.height = 4, echo = FALSE}
 # Display the plot object
 atm_conc_no_plot
+```
+</div></div>
+
+The following chart shows a much more recent snapshot of the the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
+
+<div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
+``` {r atm_conc_no_plot_2, fig.width = 8, fig.height = 4, echo = FALSE}
+# Display the plot object
+atm_conc_no_plot_2
 ```
 </div></div>
 
@@ -932,6 +1055,8 @@ deforestation_plot_fn <- function(deforestation_filtered_data){
     labs(title = expression(paste("Deforestation, Top 10 Countries | Years 1990 to 2015")),
                x = "Country",
                y = expression(paste("Deforestation (km"^2, ")"))) +
+    guides(fill = FALSE) + 
+    theme(plot.margin = unit(c(1, 7, 0.5, 0.5), "lines")) + 
     scale_fill_viridis()
   
   return(deforestation_plot)
@@ -1062,7 +1187,7 @@ forest_area_atmospheric_co2_all_countries_plot_1
 ```
 </div></div>
 
-Plotting the the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the global forest area reduces in size, atmospheric CO~2~ descreases linearly. The Pearson's correlation estimate is `r toString(forest_area_atmospheric_co2_all_countries_cor$estimate)`, with a p-value of `r toString(forest_area_atmospheric_co2_all_countries_cor$p.value)`.
+Plotting the the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the global forest area reduces in size, atmospheric CO~2~ descreases linearly. The Pearson's correlation estimate is `r toString(format(round(forest_area_atmospheric_co2_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_atmospheric_co2_all_countries_cor$p.value, digits = 3))`.
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
 ``` {r forest_area_atmospheric_co2_all_countries_plot_2, fig.width = 8, fig.height = 4, warning = FALSE, message = FALSE, echo = FALSE}
@@ -1387,7 +1512,7 @@ gdp_atmospheric_co2_all_countries_plot <- gdp_atmospheric_co2_all_countries_plot
 
 As explained in section 3.2.1 above, 87 percent of all human-produced carbon dioxide emissions come from the burning of fossil fuels like coal, natural gas and oil. The consumption of these fuels is mainly driven by commercial activity, and thus _GDP_ can be a good measure to compare to _Atmospheric CO~2~_.
 
-The following plot of _GDP_ vs _Atmospheric CO~2~_ shows a strong visual correlation between these two variables, as an increase in _GDP_ correlates with an increase in _Atmospheric CO~2~_. The Pearson correlation estimate is `r toString(gdp_atmospheric_co2_all_countries_cor$estimate)`, with a p-value of `r toString(gdp_atmospheric_co2_all_countries_cor$p.value)`, which validates the strong correlation shown in the plot.
+The following plot of _GDP_ vs _Atmospheric CO~2~_ shows a strong visual correlation between these two variables, as an increase in _GDP_ correlates with an increase in _Atmospheric CO~2~_. The Pearson correlation estimate is `r toString(format(round(gdp_atmospheric_co2_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(gdp_atmospheric_co2_all_countries_cor$p.value, digits = 3, scientific = TRUE))`, which validates the strong correlation shown in the plot.
 
 From this analysis, it is possible that the commercial activities that drive _GDP_ up are a reasonably strong contibuting factor of increased _Atmospheric CO~2~_.
 
@@ -1452,7 +1577,7 @@ gdp_co2_emissions_all_countries_plot <- gdp_co2_emissions_all_countries_plot_fn(
   gdp_co2_emissions_all_countries)
 ```
 
-The following plot of _GDP_ vs _CO~2~ Emissions_ shows a strong visual linear correlation between these two variables, with a continuous rise of CO~2 occuring with GDP. The Pearson correlation estimate is `r toString(gdp_co2_emissions_all_countries_cor$estimate)`, with a p-value of `r toString(gdp_co2_emissions_all_countries_cor$p.value)`, which validates the correlation shown in the plot. This correlation is slightly stronger than that between _GDP_ and _Atmospheric CO~2~_ calculated in the previous section.
+The following plot of _GDP_ vs _CO~2~ Emissions_ shows a strong visual linear correlation between these two variables, with a continuous rise of CO~2 occuring with GDP. The Pearson correlation estimate is `r toString(format(round(gdp_co2_emissions_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(gdp_co2_emissions_all_countries_cor$p.value, digits = 3, scientific = TRUE))`, which validates the correlation shown in the plot. This correlation is slightly stronger than that between _GDP_ and _Atmospheric CO~2~_ calculated in the previous section.
 
 From this analysis, it can be estimated that the commercial activities that drive _GDP_ up are a reasonably strong contibuting factor of increased _CO~2~ Emissions_.
 
@@ -1518,7 +1643,7 @@ gdp_temperature_all_countries_plot <-
 ```
 
 
-The following plot of _GDP_ vs _Temperature_ shows a very weak visual correlation between these two variables over the given time period, as the _GDP_ value doesn't seem to evenly correlate with an increase in _Temperature._ In fact, both low and high _GDP_ levels equate with high _Temperature_ measurements. The Pearson correlation estimate is `r toString(gdp_temperature_all_countries_cor$estimate)`, with a p-value of `r toString(gdp_temperature_all_countries_cor$p.value)`, which validates the weak correlation shown in the plot. This is probably due to the large fluctuations in the temperature data year-to-year, which smooth out and form a more linear increasing gradient over a much larger time period of a century or more years.
+The following plot of _GDP_ vs _Temperature_ shows a very weak visual correlation between these two variables over the given time period, as the _GDP_ value doesn't seem to evenly correlate with an increase in _Temperature._ In fact, both low and high _GDP_ levels equate with high _Temperature_ measurements. The Pearson correlation estimate is `r toString(format(round(gdp_temperature_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(round(gdp_temperature_all_countries_cor$p.value, 2), nsmall = 2))`, which validates the weak correlation shown in the plot. This is probably due to the large fluctuations in the temperature data year-to-year, which smooth out and form a more linear increasing gradient over a much larger time period of a century or more years.
 
 From this analysis, for the given time period, it can be estimated that _GDP_ is a very weak predictor of _Atmospheric Temperature_.
 
@@ -1662,7 +1787,7 @@ global_mean_sea_level_plot_fn <- function(global_mean_sea_level_data){
   global_mean_sea_level_plot <- global_mean_sea_level_data %>%
     ggplot(aes(x = Year, y = GMSL)) +
     geom_line(aes(color = GMSL), size = 1.6, na.rm = TRUE) +
-    geom_smooth(method = "loess", col = "red", se = TRUE, na.rm = TRUE) +
+    geom_smooth(method = "lm", col = "red", se = TRUE, na.rm = TRUE) +
     labs(title = "Global Mean Sea Level",
          x = "Year",
          y = "Sea Height Variation (mm)",
@@ -1791,7 +1916,7 @@ global_mean_sea_level_temperature_plot
 ```
 </div></div>
 
-The Pearson correlation estimate is `r toString(global_mean_sea_level_temperature_cor$estimate)`, with a p-value of `r toString(global_mean_sea_level_temperature_cor$p.value)`, which validates the reasonably strong correlation shown in the plot.
+The Pearson correlation estimate is `r toString(format(round(global_mean_sea_level_temperature_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(global_mean_sea_level_temperature_cor$p.value, digits = 3, scientific = TRUE))`, which validates the reasonably strong correlation shown in the plot.
 
 ## Land Ice Mass | Years 2002 to 2016
 https://sealevel-nexus.jpl.nasa.gov/data/ANT_mass_changes_Watkins053116.csv
@@ -1894,7 +2019,7 @@ land_ice_mass_antarctica_plot <-
   land_ice_mass_antarctica_plot_fn(land_ice_mass_antarctica_data)
 ```
 
-The plot below shows the steady decline in overall ice mass in Greenland. Starting at 0 from the first measurement taken by the GRACE satellites, the plot shows the amount of ice in gigatonnes lost each year up to the year 2016. The average reduction in ice mass is approximately **`r toString(land_ice_mass_antarctica_mean)`** gigatonnes per year.[^26]
+The plot below shows the steady decline in overall ice mass in Antarctica. Starting at 0 from the first measurement taken by the GRACE satellites, the plot shows the amount of ice in gigatonnes lost each year up to the year 2016. The average reduction in ice mass is approximately **`r toString(land_ice_mass_antarctica_mean)`** gigatonnes per year.[^26]
 
 <p>&nbsp;</p>
 
@@ -2012,8 +2137,8 @@ Both plots show a strong visual correlation between these two variables for each
 <div class="row"><div class="col-xs-6 col-xs-offset-3">
 | Dataset | Estimate | P-value |
 | --- | --- | --- |
-| Greenland | `r toString(land_ice_mass_greenland_atmospheric_co2_cor$estimate)` | `r toString(land_ice_mass_greenland_atmospheric_co2_cor$p.value)` |
-| Antarctica | `r toString(land_ice_mass_antarctica_atmospheric_co2_cor$estimate)` | `r toString(land_ice_mass_antarctica_atmospheric_co2_cor$p.value)` |
+| Greenland | `r toString(format(round(land_ice_mass_greenland_atmospheric_co2_cor$estimate, 2), nsmall = 2))` | `r toString(format(land_ice_mass_greenland_atmospheric_co2_cor$p.value, digits = 3, scientific = TRUE))` |
+| Antarctica | `r toString(format(round(land_ice_mass_antarctica_atmospheric_co2_cor$estimate, 2), nsmall = 2))` | `r toString(format(land_ice_mass_antarctica_atmospheric_co2_cor$p.value, digits = 3, scientific = TRUE))` |
 </div></div>
 
 These high estimate values and low p-values show that there is a strong correlation between the increase of ice mass loss and the rise of atmospheric CO~2~.
@@ -2295,6 +2420,8 @@ Fin
 [^34]: Ice Ages and the Role of CO2, [https://sites.google.com/site/thepaleoceneeocenethermalmaxim/2-paleocene-climate/why-earth-s-climate-is-different-today-1/ice-ages-and-the-role-of-co2]
 [^35]: Climate change explained - the impact of temperature rises, [https://www.theguardian.com/environment/2009/apr/14/climate-change-environment-temperature]
 [^36]: CO2 emissions (kt), [https://data.worldbank.org/indicator/EN.ATM.CO2E.KT]
+[^37]: Overview of Greenhouse Gases: Carbon Dioxide, [https://www.epa.gov/ghgemissions/overview-greenhouse-gases#carbon-dioxide]
+[^38]: Industrial Revolution, [https://en.wikipedia.org/wiki/Industrial_Revolution]
 
 <script type="text/javascript">
   $(document).ready(function(){
