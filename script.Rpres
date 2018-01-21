@@ -1,0 +1,1227 @@
+```{r global_functions, include = FALSE, echo=TRUE}
+
+# -----------------------------------
+# General Notes about the code
+# -----------------------------------
+# 1) The Try-Catch blocks are only necessary for live data sources pulled from
+#   the internet directly, whereby the validity of the data cannot be
+#   guaranteed at runtime. They are still left in the code below even though
+#   the data sources are being loaded locally.
+# 2) All code chunks follow the same pattern as defined by the following
+#   pseudocode:
+#   - Set data source filename
+#   - Run Load_data function, passing through filename, and returning loaded
+#     dataframe
+#   - Run 'cleanup' munging function, passing through dataframe
+#   - Run ggplot block, passing through dataframe
+# -----------------------------------
+
+# Display numbers up to 10 positions without showing the exponent
+options("scipen" = 10)
+
+# -----------------------------------
+# Global Functions
+# -----------------------------------
+
+# 
+load_data <- function(filename,
+                      fileType = "txt",
+                      sheet="Sheet1",
+                      pattern = "",
+                      delimiter = ",",
+                      skipLines = 0,
+                      blankLinesSkip = TRUE,
+                      includeHeader = TRUE){
+  
+  # -----------------------------------
+  # Function to load different kinds of files based on parameters passed
+  # (csv, txt, xls). Also converts standard dataframe type into a dplyr
+  # table dataframe.
+  # -----------------------------------
+  
+  result <- tryCatch({
+    
+    if(fileType == "txt"){
+      table <- tbl_df(read.csv(
+                        filename,
+                        sep = delimiter,
+                        skip = skipLines,
+                        stringsAsFactors = FALSE,
+                        blank.lines.skip = blankLinesSkip,
+                        header = includeHeader))
+    }
+    else {
+      table <- tbl_df(read.xls(filename,
+                                pattern = pattern,
+                                sheet = sheet))
+    }
+    
+    return(table)
+    
+  }, error = function(e){
+    
+    print("Unfortunately the data couldn't be loaded: ", e)
+    
+    return(FALSE)
+  })
+  
+  return(result)
+}
+
+# -----------------------------------
+# Multiple plot function
+# -----------------------------------
+# URL: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+#
+# ggplot objects can be passed in ..., or to plotlist
+# (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+# -----------------------------------
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+
+correct_colnames <- function(df) {
+
+  incorrect.columns <- grep("(^X)(\\.*)(.*)", colnames(df), perl=T)
+
+  if (length(incorrect.columns) > 0) {
+
+   colnames(df) <- gsub("(^X)(\\.*)", "",  colnames(df))
+  }
+
+  return(df)
+}
+
+
+gmean <- function(x, na.rm=TRUE){
+  exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+}
+
+
+countries_only_code_vector <- c("AFG","ALA","ALB","DZA","ASM","AND","AGO","AIA",
+                                "ATA","ATG","ARG","ARM","ABW","AUS","AUT","AZE",
+                                "BHS","BHR","BGD","BRB","BLR","BEL","BLZ","BEN",
+                                "BMU","BTN","BOL","BIH","BWA","BVT","BRA","VGB",
+                                "IOT","BRN","BGR","BFA","BDI","KHM","CMR","CAN",
+                                "CPV","CYM","CAF","TCD","CHL","CHN","HKG","MAC",
+                                "CXR","CCK","COL","COM","COG","COD","COK","CRI",
+                                "CIV","HRV","CUB","CYP","CZE","DNK","DJI","DMA",
+                                "DOM","ECU","EGY","SLV","GNQ","ERI","EST","ETH",
+                                "FLK","FRO","FJI","FIN","FRA","GUF","PYF","ATF",
+                                "GAB","GMB","GEO","DEU","GHA","GIB","GRC","GRL",
+                                "GRD","GLP","GUM","GTM","GGY","GIN","GNB","GUY",
+                                "HTI","HMD","VAT","HND","HUN","ISL","IND","IDN",
+                                "IRN","IRQ","IRL","IMN","ISR","ITA","JAM","JPN",
+                                "JEY","JOR","KAZ","KEN","KIR","PRK","KOR","KWT",
+                                "KGZ","LAO","LVA","LBN","LSO","LBR","LBY","LIE",
+                                "LTU","LUX","MKD","MDG","MWI","MYS","MDV","MLI",
+                                "MLT","MHL","MTQ","MRT","MUS","MYT","MEX","FSM",
+                                "MDA","MCO","MNG","MNE","MSR","MAR","MOZ","MMR",
+                                "NAM","NRU","NPL","NLD","ANT","NCL","NZL","NIC",
+                                "NER","NGA","NIU","NFK","MNP","NOR","OMN","PAK",
+                                "PLW","PSE","PAN","PNG","PRY","PER","PHL","PCN",
+                                "POL","PRT","PRI","QAT","REU","ROU","RUS","RWA",
+                                "BLM","SHN","KNA","LCA","MAF","SPM","VCT","WSM",
+                                "SMR","STP","SAU","SEN","SRB","SYC","SLE","SGP",
+                                "SVK","SVN","SLB","SOM","ZAF","SGS","SSD","ESP",
+                                "LKA","SDN","SUR","SJM","SWZ","SWE","CHE","SYR",
+                                "TWN","TJK","TZA","THA","TLS","TGO","TKL","TON",
+                                "TTO","TUN","TUR","TKM","TCA","TUV","UGA","UKR",
+                                "ARE","GBR","UMI","URY","UZB","VUT","VEN","VNM",
+                                "VIR","WLF","ESH","YEM","ZMB","ZWE")
+
+south_american_countries_code_vector <- c("ARG", "BOL", "BRA", "CHL", "COL", "ECU", "GUY", "PRY", "PER", "SUR", "URY", "VEN")
+central_american_countries_code_vector <- c("BLZ", "CRI", "SLV", "GTM", "HND", "MEX", "NIC", "PAN")
+
+```
+
+``` {r libraries_loader, include = FALSE}
+# -----------------------------------
+# Libraries Loader
+# -----------------------------------
+
+# Set the url of the CRAN mirror
+cran_mirror <- "http://cran.rstudio.com/"
+
+# Return and save the list of installed packages
+installed_packages <- installed.packages()
+
+# Create vector of the names of the packages to be installed
+dependent_packages <- c("stats",
+                        "dplyr",
+                        "tidyr",
+                        "ggplot2",
+                        "ggmap",
+                        "viridis",
+                        "lubridate",
+                        "rmarkdown",
+                        "scales",
+                        "grid")
+
+for(package in dependent_packages){
+  if (is.element(package, installed_packages[,"Package"]) == FALSE) {
+    install.packages(package, repos = cran_mirror)
+  }
+  library(package, character.only = TRUE)
+}
+
+# -----------------------------------
+# Set the full path of your RStudio working directory to the "local_working_dir"
+# variable if necessary
+# -----------------------------------
+local_working_dir <- file.path("~", "Documents", "Springboard\ Foundations\ of\ Data\ Science", "Capstone", "Climate\ Change/");
+
+setwd(local_working_dir)
+
+# Enable cache to compile page faster
+knitr::opts_chunk$set(cache=TRUE)
+```
+
+Analysis of Climate Change
+========================================================
+author: Anthony Koukoullis
+date: 14/01/2017
+autosize: true
+transition: linear
+
+Introduction
+========================================================
+
+- Analysis of the current research in climate change.
+- Investigation of the factors involved in the causes and the corresponding planet-wide atmospheric, agricultural, and oceanic effects.
+- Findings that the theory of man-caused climate change is indeed a probable phenomenon based on the data collected worldwide.
+- This presentation will explore data which strongly suggests that the climate change hypothesis is true.
+
+
+Causes of Climate Change
+========================================================
+
+- General consensus amongst climate scientists is that the main cause of the current global warming trend is human expansion of the "greenhouse effect".
+- The greenhouse effect itself is a natural phenomenon which is the trapping of solar heat in the atmosphere using atmospheric gases.
+- Water vapour, Carbon dioxide, Methane, Nitrous oxide, and Halogenated gases in the atmosphere block heat from escaping.
+
+
+Causes of Climate Change
+========================================================
+
+- Over the last century, increase in burning of fossil fuels such as coal and oil has pumped more carbon into the atmosphere.
+- The carbon, which bonds with atmospheric oxygen, produces carbon dioxide, and has increased the concentration of atmospheric CO<sub>2</sub>.
+
+
+Causes of Climate Change
+========================================================
+
+## Greenhouse Gases
+
+- Carbon dioxide (CO<sub>2</sub>) allows incoming solar radiation from the sun to pass through it and warm the earth's surface. The earth's surface reflects portion of this energy upwards as thermal radiation, which is absorbed and re-radiated by the atmosphere's CO<sub>2</sub> molecules back toward earth's surface.
+- Humans have increased CO<sub>2</sub> release through deforestation, land use changes, and burning of fossil fuels.
+- 87 percent of all human-produced carbon dioxide emissions come from the burning of fossil fuels like coal, natural gas and oil. The remainder results from the clearing of forests and other land use changes (9%), as well as some industrial processes such as cement manufacturing (4%).
+
+
+Causes of Climate Change
+========================================================
+
+## Greenhouse Gases
+
+``` {r atm_conc_co2, warning = FALSE, message = FALSE, echo = FALSE}
+
+atm_conc_co2_cleanup_fn <- function(atm_conc_co2_data){
+  # -----------------------------------
+  # Clean up the Atmospheric Concentrations of CO2 dataset
+  # -----------------------------------
+  # The Original dataset contains a year column, and 10 columns of measurements
+  # from the following locations:
+  #   - EPICA Dome C and  Vostok Station,  Antarctica
+  #   - Law Dome, Antarctica (75-year smoothed)
+  #   - Siple Station, Antarctica
+  #   - Mauna Loa, Hawaii
+  #   - Barrow, Alaska
+  #   - Cape Matatula,  American Samoa
+  #   - South Pole, Antarctica
+  #   - Cape Grim, Australia
+  #   - Lampedusa Island, Italy
+  #   - Shetland Islands, Scotland
+  
+  # The code will then calculate the mean for each year of the 10
+  # location measurements
+  # -----------------------------------
+
+  # Set first column's title to 'Year'
+  names(atm_conc_co2_data)[1] <- "Year"
+  # Select rows 1 to 1302, then rows 1304 until the end of the dataset
+  atm_conc_co2_data <- atm_conc_co2_data[c(2:1303,1305:nrow(atm_conc_co2_data)),]
+  # Set Year column as a numeric type
+  atm_conc_co2_data$Year <- as.numeric(as.character(atm_conc_co2_data$Year))
+  # Create new column and popupate it with the mean of the values in columns 2 to 11
+  atm_conc_co2_data$GlobalMeanCO2 <- rowMeans(atm_conc_co2_data[, 2:11], na.rm = TRUE)
+  # Return columns 1 and 12 only
+  atm_conc_co2_data <- atm_conc_co2_data[, c(1, 12)]
+  
+  return(atm_conc_co2_data)
+}
+
+atm_conc_co2_plot_fn <- function(atm_conc_co2_data){
+  
+  # Generate the plot of the dataframe as a line chart
+  atm_conc_co2_plot <- atm_conc_co2_data %>%
+    ggplot(aes(x = Year, y = GlobalMeanCO2, group = 1, col = GlobalMeanCO2)) +
+    geom_line(aes(group=1), size = 0.7, na.rm = TRUE) +
+    scale_x_continuous(name = "Year", labels = comma,
+                       breaks = c(-800000, -600000, -400000, -200000, 1)) +
+    geom_vline(xintercept=1, linetype = 2, col = "red") +
+    annotate("text", x=-40000, y=400, label= "BCE") +
+    annotate("text", x=30000, y=400, label= "CE") +
+    labs(
+      title = expression(paste("Global Atmospheric Concentrations of CO"[2],
+                               " Over Time | Years 800,000 BCE to 2015 CE")),
+      y = expression(paste("Global Mean of CO"[2], " Concentration")),
+      color = "Conc (ppm)") +
+    scale_color_viridis()
+  
+  return(atm_conc_co2_plot)
+}
+
+atm_conc_co2_plot_2_fn <- function(atm_conc_co2_data){
+  
+  # Generate the plot of the dataframe as a line chart
+  atm_conc_co2_plot <- atm_conc_co2_data %>%
+    ggplot(aes(x = Year, y = GlobalMeanCO2, group = 1, col = GlobalMeanCO2)) +
+    geom_line(aes(group=1), size = 1, na.rm = TRUE) +
+    scale_x_continuous(name = "Year") +
+    labs(
+      title = expression(paste("Global Atmospheric Concentrations of CO"[2],
+                               " Over Time | Years 1800 to 2015")),
+      y = expression(paste("Global Mean of CO"[2], " Concentration")),
+      color = "Conc (ppm)") +
+    scale_color_viridis()
+  
+  return(atm_conc_co2_plot)
+}
+
+# Load the data as a table dataset
+atm_conc_co2_data <- atm_conc_co2_cleanup_fn(
+  load_data("./data/ghg-concentrations_fig-1.csv", skipLines = 6))
+
+atm_conc_co2_plot <- atm_conc_co2_plot_fn(atm_conc_co2_data)
+
+atm_conc_co2_plot_2 <- atm_conc_co2_plot_2_fn(atm_conc_co2_data %>% filter(Year >= 1760))
+```
+
+``` {r atm_conc_co2_plot, fig.width = 10, fig.height = 5, echo = FALSE}
+# Display the plot object
+atm_conc_co2_plot
+```
+
+
+Causes of Climate Change
+========================================================
+
+## Deforestation
+
+``` {r world_bank_data, warning = FALSE, message = FALSE, echo = FALSE}
+
+forest_area_cleanup_fn <- function(forest_area_data){
+  
+  # Return columns 1 to 2, and 35 to 60
+  forest_area_data <- correct_colnames(forest_area_data[,c(1:2,35:60)])
+  # Rename column 1 title to 'Country'
+  names(forest_area_data)[1] <- "Country"
+  # Rename column 2 title to 'Code'
+  names(forest_area_data)[2] <- "Code"
+  
+  # template <- forest_area_data[,c(1:2)]
+  # Gather columns 3 to 28 into 'Year' discrete column,
+  # and 'Area' continuous column
+  forest_area_data <- forest_area_data %>% gather("Year", "Area", c(3:28))
+  # Set 'Year' column to numeric data type
+  forest_area_data$Year <- as.numeric(forest_area_data$Year)
+  
+  return(forest_area_data)
+}
+
+deforestation_cleanup_fn <- function(forest_area_data){
+  # Return columns 1 to 2, and 35 to 60
+  deforestation_data <- correct_colnames(forest_area_data[,c(1:2,35:60)])
+  # Rename column 1 title to 'Country'
+  names(deforestation_data)[1] <- "Country"
+  # Rename column 2 title to 'Code'
+  names(deforestation_data)[2] <- "Code"
+  
+  deforestation_data[, "Deforestation"] <- deforestation_data[, ncol(deforestation_data)] - deforestation_data[, 3]
+  # Gather columns 3 to 28 into 'Year' discrete column,
+  # and 'Area' continuous column
+  deforestation_data <- deforestation_data[,c(1,2,ncol(deforestation_data))]
+  
+  return(deforestation_data)
+}
+
+gdp_cleanup_fn <- function(gdp_data){
+
+  # Return columns 1 to 2, and 35 to 60
+  gdp_data <- correct_colnames(gdp_data[,c(1:2,35:60)])
+  # Rename column 1 title to 'Country'
+  names(gdp_data)[1] <- "Country"
+  # Rename column 2 title to 'Code'
+  names(gdp_data)[2] <- "Code"
+  # Gather columns 3 to 28 into 'Year' discrete column,
+  # and 'GDP' continuous column
+  gdp_data <- gdp_data %>% gather("Year", "GDP", c(3:28))
+  # Set 'Year' column to numeric data type
+  gdp_data$Year <- as.numeric(gdp_data$Year)
+  
+  return(gdp_data)
+}
+
+co2_cleanup_fn <- function(co2_data){
+
+  # Return columns 1 to 2, and 35 to 60
+  co2_data <- correct_colnames(co2_data[,c(1:2,35:60)])
+  # Rename column 1 title to 'Country'
+  names(co2_data)[1] <- "Country"
+  # Rename column 2 title to 'Code'
+  names(co2_data)[2] <- "Code"
+  # Gather columns 3 to 28 into 'Year' discrete column,
+  # and 'CO2' continuous column
+  co2_data <- co2_data %>% gather("Year", "CO2", c(3:28))
+  # Set 'Year' column to numeric data type
+  co2_data$Year <- as.numeric(co2_data$Year)
+  
+  return(co2_data)
+}
+
+atmospheric_co2_cleanup_fn <- function(atmospheric_co2_data){
+  
+  # Rename column 1 to 'Year'
+  names(atmospheric_co2_data)[1] <- "Year"
+  # Select rows 1 to 1302, then rows 1304 until the end of the dataset
+  atmospheric_co2_data <- atmospheric_co2_data[c(2:1303,1305:nrow(atmospheric_co2_data)),]
+  # Set Year column as a numeric type
+  atmospheric_co2_data$Year <- as.numeric(as.character(atmospheric_co2_data$Year))
+  # Create new column and popupate it with the mean of the values in columns 2 to 11
+  atmospheric_co2_data$CO2 <- rowMeans(atmospheric_co2_data[, 2:11], na.rm = TRUE)
+  # Return columns 1 and 12 only
+  atmospheric_co2_data <- atmospheric_co2_data[, c(1, 12)]
+  # Filter out records before the year 1990
+  atmospheric_co2_data <- atmospheric_co2_data %>% filter(Year >= 1990)
+  # 1ppm CO2 = 2.13 gt CO2 = 2130000 kt CO2
+  # Source: https://www.skepticalscience.com/print.php?r=45
+  atmospheric_co2_data$CO2 <- atmospheric_co2_data$CO2*2130000
+  
+  return(atmospheric_co2_data)
+}
+
+temperature_cleanup_fn <- function(temperature_data, template){
+  
+  # Fix the column names to remove any letter prefixes to year values
+  temperature_data <- correct_colnames(temperature_data)
+  # Filter records to Year greater than 1990 and group by Country
+  temperature_data <- temperature_data %>%
+    filter(Year >= 1990) %>%
+    group_by(Country, Year) %>%
+    summarise_each(funs(mean), tas)
+  # Rename column 2 title to 'Code'
+  names(temperature_data)[1] <- "Code"
+  # Add a column for 'Country'
+  temperature_data["Country"] <- ""
+  #Re-arrange columns
+  temperature_data <- temperature_data[, c(4, 1, 2, 3)]
+  # Rename column 4 title to 'Temperature'
+  names(temperature_data)[4] <- "Temperature"
+  # Spread out the values in the column 'Year' into their own columns
+  temperature_data <- temperature_data %>% spread("Year", "Temperature")
+  # Join the dataset with the template derived from the forest area dataset
+  temperature_data <- left_join(template, temperature_data, by = c("Code"))
+  # Rename column 1 to 'Country'
+  names(temperature_data)[1] <- "Country"
+  # Remove the extraneous column called 'Country.y'
+  temperature_data <- temperature_data[,!names(temperature_data) %in% c("Country.y")]
+  # Gather the Year columns back up to a single Year column
+  temperature_data <- temperature_data %>% gather("Year", "Temperature", c(3:28))
+  
+  return(temperature_data)
+}
+
+combine_datasets_fn <- function(dataset_list){
+
+  combined_data <- NULL
+  for(name in names(dataset_list)){
+    if(is.null(combined_data)){
+      combined_data <- dataset_list[[name]]
+    }
+    else {
+      combined_data <- cbind(combined_data, dataset_list[[name]][ncol(dataset_list[[name]])])
+    }
+    names(combined_data)[ncol(combined_data)] <- name
+  }
+  
+  for(i in nrow(combined_data)){
+    for(j in c(4:ncol(combined_data))){
+      combined_data[i,j] <- as.numeric(combined_data[i,j])
+    }
+  }
+  
+  return(combined_data)
+}
+
+process_world_bank_datasets <- function(){
+
+  dataset_list <- list()
+  
+  # Load the forest area data as a table dataset and perform a cleanup
+  world_bank_forest_area_filename <- "./data/API_AG.LND.FRST.K2_DS2_en_csv_v2.csv"
+  world_bank_forest_area_data <- load_data(world_bank_forest_area_filename,
+                                           delimiter = ",",
+                                           skipLines = 4)
+  template <- world_bank_forest_area_data[,c(1:2)]
+  names(template)[1] <- "Country"
+  names(template)[2] <- "Code"
+  dataset_list[["Area"]] <- forest_area_cleanup_fn(world_bank_forest_area_data)
+  
+  # Load the GDP data as a table dataset and perform a cleanup
+  world_bank_gdp_filename <- "./data/API_NY.GDP.MKTP.CD_DS2_en_csv_v2.csv"
+  dataset_list[["GDP"]] <- gdp_cleanup_fn(
+    load_data(world_bank_gdp_filename,
+              delimiter = ",",
+              skipLines = 4)
+  )
+
+  # Load the CO2 data as a table dataset and perform a cleanup
+  world_bank_co2_filename <- "./data/API_EN.ATM.CO2E.KT_DS2_en_csv_v2.csv"
+  dataset_list[["CO2"]] <- co2_cleanup_fn(
+    load_data(world_bank_co2_filename,
+              delimiter = ",",
+              skipLines = 4)
+  )
+
+  # Load the Temperature data as a table dataset and perform a cleanup
+  world_bank_temperature_all_countries_filename <-
+    "./data/sdwebx_worldbank_org_temperature_all_countries_tas_1990_2015.csv"
+  dataset_list[["Temperature"]] <- temperature_cleanup_fn(
+    load_data(world_bank_temperature_all_countries_filename,
+              delimiter = ","),
+    template
+  )
+  
+  world_bank_combined_data <-combine_datasets_fn(dataset_list)
+  
+  return(world_bank_combined_data)
+}
+
+world_bank_combined_data <- process_world_bank_datasets()
+
+# Set the filename of the CSV file of the dataset
+atm_conc_co2_filename <- "./data/ghg-concentrations_fig-1.csv"
+# Load the data as a table dataset
+atmospheric_co2_data <- atmospheric_co2_cleanup_fn(
+  load_data(atm_conc_co2_filename,
+            skipLines = 6)
+)
+
+world_bank_forest_area_filename <- "./data/API_AG.LND.FRST.K2_DS2_en_csv_v2.csv"
+  deforestation_data <- deforestation_cleanup_fn(
+    load_data(world_bank_forest_area_filename,
+              delimiter = ",",
+              skipLines = 4)
+  )
+View(world_bank_combined_data)
+
+world_bank_combined_data_mod <- lm(CO2 ~ Area, data = world_bank_combined_data)
+  
+  
+```
+
+``` {r forest_area_over_time, warning = FALSE, message = FALSE, echo = FALSE}
+
+forest_area_over_time_filter_fn <- function(world_bank_combined_data){
+  
+  # Group the Forest Area data by Year,
+  # summarising the row values with a sum calculation
+  forest_area_over_time_filtered_data <- world_bank_combined_data %>%
+    filter(Code %in% countries_only_code_vector) %>%
+    group_by(Year) %>%
+    summarise_at(c("Area"), funs(sum(., na.rm = TRUE)))
+  
+  return (forest_area_over_time_filtered_data)
+}
+
+forest_area_over_time_plot_fn <- function(forest_area_over_time_filtered_data){
+  
+  # Generate the plot of Year vs Temperature as a line chart
+  forest_area_over_time_plot <- forest_area_over_time_filtered_data %>% 
+    ggplot(aes(x = Year,
+               y = Area)) +
+    geom_line(aes(colour = Area), size = 2.6) +
+    scale_y_continuous(labels = comma) +
+    labs(title = expression(paste("Forest Area, All Countries | Years 1990 to 2015")),
+      y = expression(paste("Forest Area (km"^2, ")"))) +
+    guides(col = FALSE) +
+    scale_color_viridis() +
+    theme(plot.margin = unit(c(1, 7, 0.5, 0.5), "lines"))
+  
+  return(forest_area_over_time_plot)
+}
+  
+forest_area_over_time_filtered_data <-
+  forest_area_over_time_filter_fn(world_bank_combined_data)
+
+forest_area_over_time_plot <-
+  forest_area_over_time_plot_fn(forest_area_over_time_filtered_data)
+
+total_deforestation_km2_1990_2015 <- forest_area_over_time_filtered_data[1, "Area"] -
+  forest_area_over_time_filtered_data[nrow(forest_area_over_time_filtered_data), "Area"]
+
+```
+
+- Deforestation in tropical rainforests adds more carbon dioxide to the atmosphere than the sum total of cars and trucks on the world’s roads.
+- Trees convert CO<sub>2</sub> in the air to oxygen, through photosynthesis, so are a natural regulator of CO<sub>2</sub>.
+- According to the plot on the next slide, from 1990 to 2015 approximately `r toString(comma_format()(total_deforestation_km2_1990_2015))` km<sup>2</sup> of rainforest has been cleared.
+
+
+Causes of Climate Change
+========================================================
+
+## Deforestation
+
+``` {r forest_area_over_time_plot, fig.width = 10, fig.height = 5, warning = FALSE, message = FALSE, echo = FALSE}
+forest_area_over_time_plot
+```
+
+Causes of Climate Change
+========================================================
+
+## Deforestation
+
+``` {r forest_area_atmospheric_co2_all_countries, warning = FALSE, message = FALSE, echo = FALSE}
+
+forest_area_atmospheric_co2_all_countries_filter_fn <-
+  function(world_bank_combined_data, atmospheric_co2_data){
+  
+  # Group the Forest Area data by Year,
+  # summarising the row values with a sum calculation
+  forest_area_atmospheric_co2_all_countries_filtered_data <- world_bank_combined_data %>%
+    filter(Code %in% countries_only_code_vector & Area > 0) %>%
+      group_by(Year) %>%
+      summarise_at(c("Area"), funs(sum(., na.rm = TRUE)))
+  
+  # Join the Forest Area data with the Atmospheric CO2 dataset by the
+  # 'Year' column
+  forest_area_atmospheric_co2_all_countries_filtered_data <-
+    left_join(forest_area_atmospheric_co2_all_countries_filtered_data, atmospheric_co2_data, by = "Year")
+  
+  # Convert all cells with the value NaN to NA
+  forest_area_atmospheric_co2_all_countries_filtered_data[
+    is.nan(forest_area_atmospheric_co2_all_countries_filtered_data$Area), "Area"
+  ] <- NA
+  
+  # Convert all cells with the value NaN to NA
+  forest_area_atmospheric_co2_all_countries_filtered_data[
+    is.nan(forest_area_atmospheric_co2_all_countries_filtered_data$CO2), "CO2"
+  ] <- NA
+  
+  return(forest_area_atmospheric_co2_all_countries_filtered_data)
+}
+
+forest_area_atmospheric_co2_all_countries_plot_1_fn <-
+  function(forest_area_atmospheric_co2_all_countries_filtered_data){
+  
+  # Generate the plot of Year vs CO2 as a line chart
+  atmospheric_co2_all_countries_plot_1 <-
+    forest_area_atmospheric_co2_all_countries_filtered_data %>%
+    ggplot() +
+    geom_line(aes(
+      x = Year,
+      y = CO2,
+      col = CO2
+    ), size = 2) +
+    scale_y_continuous(labels = comma) +
+    labs(title = expression(paste("Forest Area vs Atmospheric CO"[2],
+                             ", All Countries | Years 1990 to 2015")),
+         x = "Year",
+         y = expression(paste("Atmospheric CO"[2], " (kt)"))) +
+    guides(col = FALSE) +
+    scale_color_viridis()
+
+  return(atmospheric_co2_all_countries_plot_1)
+}
+
+forest_area_atmospheric_co2_all_countries_plot_2_fn <-
+  function(forest_area_atmospheric_co2_all_countries){
+  
+  # Generate the plot of Forest Area vs CO2 as a point chart
+  forest_area_atmospheric_co2_all_countries_plot_2 <-
+    forest_area_atmospheric_co2_all_countries %>%
+    ggplot(aes(
+      x = Area,
+      y = CO2
+    )) +
+    geom_point(size = 1) +
+    geom_smooth(
+      method = "lm",
+      col = "red",
+      se = TRUE) +
+    scale_x_continuous(trans = "reverse", labels = comma) + #trans = "reverse", 
+    scale_y_continuous(labels = comma) +
+    labs(title = expression(paste("Forest Area vs Atmospheric CO"[2],
+                                  ", All Countries | Years 1990 to 2015")),
+         x = expression(paste("Forest Area (km"^2, ")")),
+         y = expression(paste("CO"[2], " (kt)"))) +
+    scale_color_viridis()
+  
+  return(forest_area_atmospheric_co2_all_countries_plot_2)
+}
+
+forest_area_atmospheric_co2_all_countries_filtered_data <-
+  forest_area_atmospheric_co2_all_countries_filter_fn(world_bank_combined_data, atmospheric_co2_data)
+
+# Calculate the Pearson correlation of Forest Area vs CO2
+forest_area_atmospheric_co2_all_countries_cor <- 
+  cor.test(x = forest_area_atmospheric_co2_all_countries_filtered_data$Area,
+      y = forest_area_atmospheric_co2_all_countries_filtered_data$CO2,
+      method = "pearson")
+
+forest_area_atmospheric_co2_all_countries_plot_1 <-
+  forest_area_atmospheric_co2_all_countries_plot_1_fn(
+    forest_area_atmospheric_co2_all_countries_filtered_data)
+
+forest_area_atmospheric_co2_all_countries_plot_2 <-
+  forest_area_atmospheric_co2_all_countries_plot_2_fn(
+    forest_area_atmospheric_co2_all_countries_filtered_data)
+```
+
+``` {r forest_area_temperature_all_countries, warning = FALSE, message = FALSE, echo = FALSE}
+
+forest_area_temperature_all_countries_filter_fn <-
+  function(world_bank_combined_data){
+  
+  # Group the Forest Area data by Year,
+  # summarising the row values with a sum calculation
+  forest_area_all_countries_filtered_data <- world_bank_combined_data %>%
+    filter(Code %in% countries_only_code_vector & Area > 0) %>%
+      group_by(Year) %>%
+      summarise_at(c("Area"), funs(sum(., na.rm = TRUE)))
+  
+  # Group the temperature data by Year,
+  # summarising the row values with a mean calculation
+  temperature_all_countries_filtered_data <- world_bank_combined_data %>%
+    filter(Code %in% countries_only_code_vector & Temperature > 0) %>%
+      group_by(Year) %>%
+      summarise_at(c("Temperature"), funs(mean(., na.rm = TRUE)))
+  
+  #Join the dataframes together by Year
+  forest_area_temperature_all_countries_filtered_data <-
+    left_join(forest_area_all_countries_filtered_data, temperature_all_countries_filtered_data, by = "Year")
+  
+  # Convert all cells with the value NaN to NA
+  forest_area_temperature_all_countries_filtered_data[
+    is.nan(forest_area_temperature_all_countries_filtered_data$Area), "Area"
+  ] <- NA
+  
+  # Convert all cells with the value NaN to NA
+  forest_area_temperature_all_countries_filtered_data[
+    is.nan(forest_area_temperature_all_countries_filtered_data$CO2), "Temperature"
+  ] <- NA
+  
+  return(forest_area_temperature_all_countries_filtered_data)
+}
+
+forest_area_temperature_all_countries_plot_fn <-
+  function(forest_area_temperature_all_countries){
+  
+  # Generate the plot of Forest Area vs Temperature as a point chart
+  forest_area_temperature_all_countries_plot <-
+    forest_area_temperature_all_countries %>%
+    ggplot(aes(
+      x = Area,
+      y = Temperature
+    )) +
+    geom_point(size = 1) +
+    geom_smooth(
+      method = "lm",
+      col = "red",
+      se = TRUE) +
+    scale_x_continuous(labels = comma) + #trans = "reverse", 
+    scale_y_continuous(labels = comma) +
+    labs(title = "Forest Area vs Temperature, All Countries | Years 1990 to 2015",
+         x = expression(paste("Forest Area (km"^2, ")")),
+         y = expression(paste("Temperature ("^o, "C)")))
+  
+  return(forest_area_temperature_all_countries_plot)
+}
+
+forest_area_temperature_all_countries_filtered_data <-
+  forest_area_temperature_all_countries_filter_fn(world_bank_combined_data)
+
+# Calculate the Pearson correlation of Forest Area vs Temperature
+forest_area_temperature_all_countries_cor <- 
+  cor.test(x = forest_area_temperature_all_countries_filtered_data$Area,
+      y = forest_area_temperature_all_countries_filtered_data$Temperature,
+      method = "pearson")
+
+forest_area_temperature_all_countries_plot <-
+  forest_area_temperature_all_countries_plot_fn(
+    forest_area_temperature_all_countries_filtered_data)
+```
+
+- The _Forest Area_ and _Atmospheric CO<sub>2</sub>_ variables plotted against each other show a strong correlation.
+- The Pearson's correlation estimate is `r toString(format(round(forest_area_atmospheric_co2_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_atmospheric_co2_all_countries_cor$p.value, digits = 3))`.
+- As the global forest area reduces in size, atmospheric CO<sub>2</sub> increases linearly.
+
+``` {r forest_area_atmospheric_co2_all_countries_plot_1, fig.width = 12, fig.height = 4, warning = FALSE, message = FALSE, echo = FALSE}
+multiplot(forest_area_atmospheric_co2_all_countries_plot_1, forest_area_temperature_all_countries_plot, cols = 2)
+```
+
+
+Causes of Climate Change
+========================================================
+
+## GDP
+
+- The Gross Domestic Product, or GDP, is a monetary measure of the market value of all final goods and services produced in a period.
+- The cause of a rise in a nation's GDP is the increase in the production of good and services, which includes industrial process and outputs.
+- This industrial output, combined with consumer activities, generate climate-changing CO<sub>2</sub> emissions.
+
+
+Causes of Climate Change
+========================================================
+
+## GDP
+
+``` {r gdp_atmospheric_co2_all_countries, warning = FALSE, echo = FALSE}
+
+gdp_atmospheric_co2_all_countries_filter_fn <-
+  function(world_bank_combined_data, atmospheric_co2_data){
+  
+  # Group the GDP data by Year,
+  # summarising the row values with a geometric mean calculation
+  gdp_atmospheric_co2_all_countries_filter <- world_bank_combined_data %>%
+    filter(Code %in% countries_only_code_vector & GDP > 0) %>%
+    group_by(Year) %>%
+    summarise_at(c("GDP"), funs(gmean(., na.rm = TRUE)))
+  
+  
+  gdp_atmospheric_co2_all_countries_filter <-
+    left_join(gdp_atmospheric_co2_all_countries_filter,
+              atmospheric_co2_data, by = "Year") %>%
+    filter(CO2 > 0)
+
+  return(gdp_atmospheric_co2_all_countries_filter)
+}
+
+gdp_atmospheric_co2_all_countries_plot_fn <-
+  function(gdp_atmospheric_co2_all_countries){
+  
+  # Generate the plot of GDP vs CO2 as a point chart
+  gdp_atmospheric_co2_all_countries_plot <-
+    gdp_atmospheric_co2_all_countries %>%
+    ggplot(aes(
+      x = GDP,
+      y = CO2
+    )) +
+    geom_point(, size = 1) +
+    geom_smooth(
+      method = "lm",
+      col = "red",
+      se = TRUE) +
+    scale_x_continuous(labels = dollar) +
+    scale_y_continuous(labels = comma) +
+    labs(title = expression(paste("GDP vs Atmospheric CO"[2], ", All Countries | Years 1990 to 2015")),
+         x = "GDP (USD$)",
+         y = expression(paste("Atmospheric CO"[2], " (kt)")))
+  
+  return(gdp_atmospheric_co2_all_countries_plot)
+}
+
+  
+gdp_atmospheric_co2_all_countries <- gdp_atmospheric_co2_all_countries_filter_fn(
+  world_bank_combined_data, atmospheric_co2_data)
+
+# Calculate the Pearson correlation of GDP vs Atmospheric CO2
+gdp_atmospheric_co2_all_countries_cor <- 
+  cor.test(x = gdp_atmospheric_co2_all_countries$GDP,
+      y = gdp_atmospheric_co2_all_countries$CO2,
+      method = "pearson")
+
+gdp_atmospheric_co2_all_countries_plot <- gdp_atmospheric_co2_all_countries_plot_fn(
+  gdp_atmospheric_co2_all_countries)
+```
+
+- The _GDP_ vs _Atmospheric CO<sub>2</sub>_ shows a strong visual correlation between these two variables, as an increase in _GDP_ correlates with an increase in _Atmospheric CO<sub>2</sub>_.
+- The Pearson correlation estimate is `r toString(format(round(gdp_atmospheric_co2_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(gdp_atmospheric_co2_all_countries_cor$p.value, digits = 3, scientific = TRUE))`, which validates the strong correlation shown in the plot.
+
+``` {r gdp_atmospheric_co2_all_countries_plot, fig.width = 10, fig.height = 5, warning = FALSE, echo = FALSE}
+gdp_atmospheric_co2_all_countries_plot
+```
+
+
+Effects of Climate Change
+========================================================
+
+## Atmospheric Temperature
+
+``` {r temperature_all_countries, warning = FALSE, message = FALSE, echo = FALSE}
+temperature_all_countries_filtered_fn <- function(world_bank_combined_data){
+
+  # Group the temperature data by Year,
+  # summarising the row values with a mean calculation
+  temperature_all_countries_data <- world_bank_combined_data %>%
+    filter(Code %in% countries_only_code_vector & Temperature > 0) %>%
+    group_by(Year) %>%
+    summarise_at(c("Temperature"), funs(mean(., na.rm = TRUE)))
+  
+  return(temperature_all_countries_data)
+}
+
+temperature_all_countries_plot_fn <- function(temperature_all_countries_data){
+
+  # Generate the plot of Year vs Temperature as a line chart
+  temperature_all_countries_plot <- temperature_all_countries_data %>%
+    ggplot(aes(x = Year, y = Temperature)) +
+      geom_line(aes(col = Temperature), size = 1.6) +
+      labs(title = expression(paste("Temperature, All Countries | Years 1990 to 2015")),
+           x = "Year",
+           y = expression(paste("Temperature ("^o, "C)"))) +
+      guides(col = FALSE) +
+      theme(plot.margin = unit(c(1, 7, 0.5, 0.5), "lines")) +
+      scale_color_viridis()
+  
+  return(temperature_all_countries_plot)
+}
+
+temperature_all_countries_data <-
+  temperature_all_countries_filtered_fn(world_bank_combined_data)
+
+temperature_all_countries_plot <-
+  temperature_all_countries_plot_fn(temperature_all_countries_data)
+```
+
+- The core variable at the heart of the study of climate change is the planet's atmospheric temperature.
+- The primary effect of the increase in greehouse gases in the atmosphere is the the increase in average atmospheric temperatures.
+- The polt below shows an overall increase in worldwide temperatures from the year 1990 to 2015.
+
+``` {r temperature_all_countries_plot, fig.width = 10, fig.height = 5, warning = FALSE, message = FALSE, echo = FALSE}
+temperature_all_countries_plot
+```
+
+
+Effects of Climate Change
+========================================================
+
+## Global Mean Sea Level
+
+``` {r global_mean_sea_level, warning = FALSE, message = FALSE, echo = FALSE}
+
+# -----------------------------------
+# Clean up the Global Mean Sea Level dataset
+# -----------------------------------
+global_mean_sea_level_cleanup_fn <- function(global_mean_sea_level_data){
+  
+  # Save the first measurement from the first row
+  firstValue <- global_mean_sea_level_data[1,12]
+  # Create a new empty column
+  global_mean_sea_level_data[,13] <- 0
+  
+  # Populate the new column with the year's measurement + the first value, to adjust for the negative values
+  for(i in c(1:nrow(global_mean_sea_level_data))){
+    global_mean_sea_level_data[i,13] <- global_mean_sea_level_data[i,12] + round(sqrt(firstValue^2), 2)
+  }
+  
+  # Rename column 3 title to 'Year'
+  names(global_mean_sea_level_data)[3] <- "Year"
+  # Rename column 13 title to 'GMSL'
+  names(global_mean_sea_level_data)[13] <- "GMSL"
+  
+  return(global_mean_sea_level_data[,c(3,13)])
+}
+
+global_mean_sea_level_plot_fn <- function(global_mean_sea_level_data){
+  # Generate the plot of the dataframe as a line chart
+  global_mean_sea_level_plot <- global_mean_sea_level_data %>%
+    ggplot(aes(x = Year, y = GMSL)) +
+    geom_line(aes(color = GMSL), size = 1.6, na.rm = TRUE) +
+    geom_smooth(method = "lm", col = "red", se = TRUE, na.rm = TRUE) +
+    labs(title = "Global Mean Sea Level",
+         x = "Year",
+         y = "Sea Height Variation (mm)",
+         color = "GMSL (mm)") +
+    scale_color_viridis()
+  
+  return(global_mean_sea_level_plot)
+}
+
+# Load the data as a global_mean_sea_level_data dataset
+global_mean_sea_level_data <- global_mean_sea_level_cleanup_fn(
+  load_data("./data/GMSL_TPJAOS_V4_199209_201702.txt",
+            skipLines = 44,
+            delimiter = ""))
+
+global_mean_sea_level_plot <- global_mean_sea_level_plot_fn(global_mean_sea_level_data)
+```
+
+- As the oceans warm due to an increasing global temperature, seawater expands—taking up more space in the ocean basin and causing a rise in water level.
+- Secondly, the melting of ice over land, such as in Greenland or Antarctica, adds water to the ocean.
+
+``` {r global_mean_sea_level_plot, fig.width = 10, fig.height = 5, echo = FALSE}
+# Display the plot object
+global_mean_sea_level_plot
+```
+
+
+Effects of Climate Change
+========================================================
+
+## Land Ice Mass
+
+``` {r land_ice_mass_cleanup, warning = FALSE, message = FALSE, echo = FALSE}
+# -----------------------------------
+# Clean up the Land Ice Mass dataset
+# -----------------------------------
+land_ice_mass_cleanup_fn <- function(land_ice_mass_data){
+  
+  # Set column titles to more descriptive labels
+  names(land_ice_mass_data)[1] <- "Year"
+  names(land_ice_mass_data)[2] <- "LandIceMass"
+  
+  # Split Year column into Year/Subyear columns
+  land_ice_mass_data <-
+    land_ice_mass_data %>%
+    mutate_each_(funs(as.numeric), "LandIceMass") %>%
+    select(Year, LandIceMass)
+  
+  return(land_ice_mass_data)
+}
+```
+
+``` {r land_ice_mass_greenland, warning = FALSE, message = FALSE, echo = FALSE}
+land_ice_mass_greenland_plot_fn <- function(land_ice_mass_greenland_data){
+  # Generate the plot of the Greenland ice mass data series as a line chart
+  land_ice_mass_greenland_plot <- land_ice_mass_greenland_data %>%
+    ggplot(aes(x = Year, y = LandIceMass)) +
+    geom_line(aes(color = LandIceMass), size = 1.6, na.rm = TRUE) + 
+    geom_smooth(method = "loess", col = "red", se = TRUE, na.rm = TRUE) +
+    labs(title = "Land Ice Mass, Greenland | Years 2002 to 2016", y = "Mass (gt)") +
+    scale_color_viridis()
+  
+  return(land_ice_mass_greenland_plot)
+}
+
+# Load the data as a table dataset
+land_ice_mass_greenland_data <- land_ice_mass_cleanup_fn(
+  load_data("./data/greenland_mass_200204_201608.txt",
+            delimiter = "", skipLines = 31))
+
+# Calculate mean of Greenland land ice measurements
+land_ice_mass_greenland_mean <-
+  round(colMeans(land_ice_mass_greenland_data[,2]), digits = 2)
+
+land_ice_mass_greenland_plot <-land_ice_mass_greenland_plot_fn(land_ice_mass_greenland_data)
+```
+
+``` {r land_ice_mass_antarctica, warning = FALSE, message = FALSE, echo = FALSE}
+land_ice_mass_antarctica_plot_fn <- function(land_ice_mass_antarctica_data){
+  
+  # Generate the plot of the Antarctica ice mass data series as a line chart
+  land_ice_mass_antarctica_plot <- land_ice_mass_antarctica_data %>%
+    ggplot(aes(x = Year, y = LandIceMass)) +
+    geom_line(aes(color = LandIceMass), size = 1.6, na.rm = TRUE) + 
+    geom_smooth(method = "loess", col = "red", se = TRUE, na.rm = TRUE) +
+    labs(title = "Land Ice Mass - Antarctica", y = "Mass (gt)") +
+    scale_color_viridis()
+  
+  return(land_ice_mass_antarctica_plot)
+}
+
+# Load the data as a table dataset
+land_ice_mass_antarctica_data <- land_ice_mass_cleanup_fn(
+  load_data("./data/antarctica_mass_200204_201608.txt",
+            delimiter = "", skipLines = 32))
+
+# Calculate mean of Antarctica land ice measurements
+land_ice_mass_antarctica_mean <-
+  round(colMeans(land_ice_mass_antarctica_data[,2]), digits = 2)
+
+land_ice_mass_antarctica_plot <-
+  land_ice_mass_antarctica_plot_fn(land_ice_mass_antarctica_data)
+```
+
+- The loss of ice mass will directly cause a rise in sea levels worldwide, causing untold destruction to coastal towns and cities.
+- The average reduction in Greenland ice mass is approximately **`r toString(land_ice_mass_greenland_mean)`** gigatonnes per year.
+- The average reduction in Antarctica ice mass is approximately **`r toString(land_ice_mass_antarctica_mean)`** gigatonnes per year.
+
+``` {r land_ice_mass_greenland_plot, fig.width = 10, fig.height = 4, echo = FALSE}
+# Display the Greenland ice mass plot object
+multiplot(land_ice_mass_greenland_plot, land_ice_mass_antarctica_plot, cols = 2)
+```
+
+
+Effects of Climate Change
+========================================================
+
+## Global Food Production
+
+``` {r global_food_production_data_cleanup, echo = FALSE}
+# -----------------------------------
+# Clean up the Effects of Climate Change on Global Food Production dataset
+# -----------------------------------
+global_food_production_data_cleanup_fn <-
+  function(data, var_col_name, world_map_data){
+  
+  # Trim the dataset to column 1 and the specified column only
+  trimmed_data <- data[, c(1, match(var_col_name, names(data)))]
+  # Rename column 1 title to 'region'
+  names(trimmed_data)[1] <- "region"
+  # Join the World Map data with the global food production dataset by the
+  # 'region' column
+  joined_data <- left_join(world_map_data, trimmed_data, by = "region")
+  # Set any values in the nominated column to 0 if the value is 'NA'
+  joined_data[is.na(joined_data[, var_col_name]), var_col_name] <- 0
+  # Set data type of nominated column to numeric
+  joined_data[, var_col_name] <- as.numeric(joined_data[, var_col_name])
+  
+  return(joined_data)
+}
+```
+
+``` {r global_food_production_data, warning = FALSE, message = FALSE, echo = FALSE}
+# Load the world map data frame from the ggplot2 package
+world_map_data <- map_data(map = "world")
+# Load the data as a table dataset
+global_food_production_data <- load_data("./data/crops-yield-changes-hadcm3-sres.csv")
+```
+
+- Effects of climate change on global food production are simulated for a future outcome using models.
+- The projection model used is the IPCC (Intergovernmental Panel on Climate Change) Special Report on Emissions Scenarios, or SRES for short.
+- The SRES A1FI Scenario describes a future world of very rapid economic growth, global population that peaks in mid-century and declines thereafter, and the rapid introduction of new and more efficient technologies.
+
+
+Effects of Climate Change
+========================================================
+
+## Global Food Production
+
+``` {r global_ActChWHA1F2050, warning = FALSE, message = FALSE, echo = FALSE}
+
+global_ActChWHA1F2050_plot_fn <- function(global_ActChWHA1F2050_data){
+
+  global_ActChWHA1F2050_plot <- global_ActChWHA1F2050_data %>%
+    ggplot(aes(x = long, y = lat)) +
+    geom_polygon(aes(group=group, fill = WHA1F2050), col = NA, lwd = 0) +
+    theme(panel.background = element_rect(fill = "#b2e0fd")) +
+    labs(title = paste("Wheat Yield Change From Baseline In 2050 | ",
+                       "Applying the SRES A1FI Scenario Yield Change",
+                       "To The 1990 Production"),
+         fill="WHA1F2050") +
+    coord_fixed(ratio = 1) +
+    scale_fill_viridis()
+  
+  return(global_ActChWHA1F2050_plot)
+}
+
+# Load the data as a table dataset
+global_ActChWHA1F2050_data <- 
+  global_food_production_data_cleanup_fn(global_food_production_data,
+                                         "WHA1F2050",
+                                         world_map_data)
+
+global_ActChWHA1F2050_plot <- global_ActChWHA1F2050_plot_fn(global_ActChWHA1F2050_data)
+
+```
+
+- Countries that will have a negative change in wheat yield production are Central American countries such as Mexico, Scandinavian countries such as Norway, Denmark, Sweden, European countries such as Poland and Austria, and Eastern Bloc countries such as Belarus.
+
+``` {r global_ActChWHA1F2050_plot, fig.width = 10, fig.height = 5, echo = FALSE}
+global_ActChWHA1F2050_plot
+```
+
+
+Effects of Climate Change
+========================================================
+
+## Global Food Production 
+
+``` {r global_ActChMZA1F2050, warning = FALSE, message = FALSE, echo = FALSE}
+
+global_ActChMZA1F2050_plot_fn <- function(global_ActChMZA1F2050_data){
+  
+  global_ActChMZA1F2050_plot <- global_ActChMZA1F2050_data %>%
+    ggplot(aes(x = long, y = lat)) +
+    geom_polygon(aes(group=group, fill = MZA1F2050), col = NA, lwd = 0) +
+    theme(panel.background = element_rect(fill = "#b2e0fd")) +
+    labs(title = paste("Maize Total Production Changes In 2050 | ",
+                       "Applying the SRES A1FI Scenario Yield Change To The 1990 Production"),
+         fill="MZA1F2050") +
+    coord_fixed(ratio = 1) +
+    scale_fill_viridis()
+  
+  return(global_ActChMZA1F2050_plot)
+}
+
+global_ActChMZA1F2050_data <-
+  global_food_production_data_cleanup_fn(global_food_production_data,
+                                      "MZA1F2050",
+                                      world_map_data)
+
+global_ActChMZA1F2050_plot <- global_ActChMZA1F2050_plot_fn(global_ActChMZA1F2050_data)
+```
+
+- Scandinavian countries, Middle Eastern countries, the Russian Federation, and most of Africa except for the Democratic Republic of Congo and the Central African Republic will suffer decreased maize yield production.
+
+``` {r global_ActChMZA1F2050_plot, fig.width = 10, fig.height = 5, echo = FALSE}
+global_ActChMZA1F2050_plot
+```
+
+
+Conclusion
+========================================================
+
+- Whether or not climate change is caused by human activities is a hugely contentious issue at present.
+- Carbon Dioxide, or CO<sub>2</sub>, is considered the main cause of expansion of the "greenhouse effect", and human-caused CO<sub>2</sub> emissions are the culprit.
+- Despite reductions in the rate of deforestation in the last ten years, the Amazon Rainforest will be reduced by 40% by 2030 at the current rate.
+- The average reduction in Greeland and Antarctica ice mass is approximately **`r toString(land_ice_mass_greenland_mean)`** and **`r toString(land_ice_mass_antarctica_mean)`** gigatonnes per year respectively.
+
+
+Conclusion
+========================================================
+
+- The global mean sea level has risen **`r toString(global_mean_sea_level_data[nrow(global_mean_sea_level_data), "GMSL"] - global_mean_sea_level_data[1, "GMSL"])`ml** from the year 1993 to 2015.
+- There isn't any evidence to suggest that current climate change trends have has an immediate impact on food production.
+- The SRES model for food impact shows that Central American countries such as Mexico, Scandinavian countries such as Norway, Denmark, Sweden, European countries such as Poland and Austria, and Eastern Bloc countries such as Belarus, will have adverse wheat and rice production effects from climate change.
+
+

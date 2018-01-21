@@ -196,7 +196,7 @@ central_american_countries_code_vector <- c("BLZ", "CRI", "SLV", "GTM", "HND", "
 # -----------------------------------
 
 # Set the url of the CRAN mirror
-# cran_mirror <- "http://cran.rstudio.com/"
+cran_mirror <- "http://cran.rstudio.com/"
 
 # Return and save the list of installed packages
 installed_packages <- installed.packages()
@@ -215,7 +215,7 @@ dependent_packages <- c("stats",
 
 for(package in dependent_packages){
   if (is.element(package, installed_packages[,"Package"]) == FALSE) {
-    install.packages(package) #, repos = cran_mirror)
+    install.packages(package, repos = cran_mirror)
   }
   library(package, character.only = TRUE)
 }
@@ -285,7 +285,7 @@ The general consensus amongst climate scientists is that the main cause of the c
 
 Certain gases in the atmosphere block heat from escaping. Long-lived gases that remain semi-permanently in the atmosphere and do not respond physically or chemically to changes in temperature are described as "forcing" climate change. Gases, such as water vapour, which respond physically or chemically to changes in temperature are seen as "feedbacks."
 
-The main gases that contribute to the greenhouse effect are the following: Water vapour, Carbon dioxide, Methane, Nitrous oxide, and Halogenated gases (which include chlorofluorocarbons). Out of all these gases, water vapour concentrations are actually affected by greenhouse effect cause by the others. So as the Earth's atmosphere heats up, more of the ocean is evaporated, increasing the concentration of water vapour. hence why it is considered an important feedback mechanism.[^21]
+The main gases that contribute to the greenhouse effect are the following: Water vapour, Carbon dioxide, Methane, Nitrous oxide, and Halogenated gases (which include chlorofluorocarbons). Out of all these gases, water vapour concentrations are actually affected by greenhouse effect cause by the others. So as the Earth's atmosphere heats up, more of the ocean is evaporated, increasing the concentration of water vapour, hence why it is considered an important feedback mechanism.[^21]
 
 Over the last century, the increase in the burning of fossil fuels such as coal and oil has pumped more carbon into the atmosphere. The carbon, which bonds with atmospheric oxygen, produces carbon dioxide, and has increased the concentration of atmospheric CO~2~.
 
@@ -428,7 +428,7 @@ atm_conc_co2_plot
 ```
 </div></div>
 
-The following chart shows a much more recent snapshot of the the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
+The following chart shows a much more recent snapshot of the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
 ``` {r atm_conc_co2_plot_2, fig.width = 8, fig.height = 4, echo = FALSE}
@@ -528,7 +528,7 @@ atm_conc_methane_plot
 ```
 </div></div>
 
-The following chart shows a much more recent snapshot of the the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
+The following chart shows a much more recent snapshot of the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
 ``` {r atm_conc_methane_plot_2, fig.width = 8, fig.height = 4, echo = FALSE}
@@ -637,7 +637,7 @@ atm_conc_no_plot
 ```
 </div></div>
 
-The following chart shows a much more recent snapshot of the the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
+The following chart shows a much more recent snapshot of the same dataset, from the year 1760 to 2015. This better shows the sudden exponential increase around the time of the beginning of the industrial revolution in 1760.[^38]
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
 ``` {r atm_conc_no_plot_2, fig.width = 8, fig.height = 4, echo = FALSE}
@@ -974,7 +974,11 @@ world_bank_forest_area_filename <- "./data/API_AG.LND.FRST.K2_DS2_en_csv_v2.csv"
               delimiter = ",",
               skipLines = 4)
   )
+View(world_bank_combined_data)
 
+world_bank_combined_data_mod <- lm(CO2 ~ Area, data = world_bank_combined_data)
+  
+  
 ```
 
 <p>&nbsp;</p>
@@ -1127,7 +1131,7 @@ forest_area_atmospheric_co2_all_countries_plot_1_fn <-
       col = CO2
     ), size = 2) +
     scale_y_continuous(labels = comma) +
-    labs(title = expression(paste("Atmospheric CO"[2],
+    labs(title = expression(paste("Forest Area vs Atmospheric CO"[2],
                              ", All Countries | Years 1990 to 2015")),
          x = "Year",
          y = expression(paste("Atmospheric CO"[2], " (kt)"))) +
@@ -1187,7 +1191,7 @@ forest_area_atmospheric_co2_all_countries_plot_1
 ```
 </div></div>
 
-Plotting the the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the global forest area reduces in size, atmospheric CO~2~ descreases linearly. The Pearson's correlation estimate is `r toString(format(round(forest_area_atmospheric_co2_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_atmospheric_co2_all_countries_cor$p.value, digits = 3))`.
+Plotting the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the global forest area reduces in size, atmospheric CO~2~ increases linearly. The Pearson's correlation estimate is `r toString(format(round(forest_area_atmospheric_co2_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_atmospheric_co2_all_countries_cor$p.value, digits = 3))`.
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
 ``` {r forest_area_atmospheric_co2_all_countries_plot_2, fig.width = 8, fig.height = 4, warning = FALSE, message = FALSE, echo = FALSE}
@@ -1326,7 +1330,7 @@ forest_area_temperature_all_countries_plot <-
     forest_area_temperature_all_countries_filtered_data)
 ```
 
-Plotting the the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the forest area reduce in size, atmospheric CO~2~ descreases linearly. The Pearson's correlation estimate is `r toString(forest_area_temperature_all_countries_cor$estimate)`, with a p-value of `r toString(forest_area_temperature_all_countries_cor$p.value)`.
+Plotting the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the forest area reduce in size, atmospheric CO~2~ descreases linearly. The Pearson's correlation estimate is `r toString(forest_area_temperature_all_countries_cor$estimate)`, with a p-value of `r toString(forest_area_temperature_all_countries_cor$p.value)`.
 
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
@@ -2374,9 +2378,9 @@ multiplot(
 ```
 </div></div>
 
- Climate change is a factor that could affect food production and availability in many parts of the world, particularly those most prone to drought and famine. Although there isn't any evidence to suggest that current climate change trends have has an immediate impact, the IPCC (Intergovernmental Panel on Climate Change) Special Report on Emissions Scenarios, or SRES for short, have produced a projection model for food production impact by the year 2050.
+Climate change is a factor that could affect food production and availability in many parts of the world, particularly those most prone to drought and famine. Although there isn't any evidence to suggest that current climate change trends have has an immediate impact, the IPCC (Intergovernmental Panel on Climate Change) Special Report on Emissions Scenarios, or SRES for short, have produced a projection model for food production impact by the year 2050.
 
- According to the projection model, Central American countries such as Mexico, Scandinavian countries such as Norway, Denmark, Sweden, European countries such as Poland and Austria, and Eastern Bloc countries such as Belarus, will have adverse wheat and rice production effects from climate change. Scandinavian countries, Middle Eastern countries, the Russian Federation, and most of Africa except for the Democratic Republic of Congo and the Central African Republic will suffer decreased production of maize.
+According to the projection model, Central American countries such as Mexico, Scandinavian countries such as Norway, Denmark, Sweden, European countries such as Poland and Austria, and Eastern Bloc countries such as Belarus, will have adverse wheat and rice production effects from climate change. Scandinavian countries, Middle Eastern countries, the Russian Federation, and most of Africa except for the Democratic Republic of Congo and the Central African Republic will suffer decreased production of maize.
 
 Fin
 
