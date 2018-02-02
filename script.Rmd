@@ -257,7 +257,7 @@ This report provides an analysis and evaluation of the current research in clima
 
 Methods of analysis include univariate data visualisation and linear regression on the various datasets collected.
 
-The results of the analysis show that the causes of climate change, the man-caused release of greenhouse-causing gases into the atmosphere have reached levels never-before-seen in the measurable history of the planet. As a result, the effects measured such as inceased sea levels and atmospheric temperatures, and land ice mass reductions, have steadily increased to present damaging levels.
+The results of the analysis show that the causes of climate change, the man-caused release of greenhouse-causing gases into the atmosphere have reached levels never-before-seen in the measurable history of the planet. As a result, the effects measured such as increased sea levels and atmospheric temperatures, and land ice mass reductions, have steadily increased to present damaging levels.
 
 This report finds that the theory of man-caused climate change is indeed a probable phenomenon based on the data collected worldwide, and suggests further analysis and actions to be taken by all world governments to curb and possibly reverse the catastrophic end result of a runaway greenhouse effect.
 
@@ -270,7 +270,7 @@ The year 2016 proved to be quite tumultuous for the Earth's climate. In January,
 
 June saw Paris suffer such a large rainfall that the River Seine water levels rise to the highest in thirty years, causing severe flooding. July saw the highest temperature ever recorded in the Eastern Hemisphere (54°C) in Mitribah.[^2] The rest of the year experienced the same astonishing climate aberrations month after month.
 
-In 1900, Swedish scientist Knut Angstrom discovers that CO~2~ strongly absorbs parts of the infrared spectrum, even at the miniscule concentrations in the atmosphere. In effect, Angstrom had shown that a trace gas can produce greenhouse warming, although he was not aware of the significance of his finding at the time.[^3] Just 38 years later, British engineer Guy Callendar found that atmospheric temperatures had risen compared to the previous century, using measurements from 147 weather stations around the world. He also observed that CO~2~ concentrations had increased over the same period, and presciently suggested that this actually caused the observed warming. The "Callendar effect", unfortunately, was widely dismissed by meteorologists at the time.[^4]
+In 1900, Swedish scientist Knut Angstrom discovers that CO~2~ strongly absorbs parts of the infrared spectrum, even at the minuscule concentrations in the atmosphere. In effect, Angstrom had shown that a trace gas can produce greenhouse warming, although he was not aware of the significance of his finding at the time.[^3] Just 38 years later, British engineer Guy Callendar found that atmospheric temperatures had risen compared to the previous century, using measurements from 147 weather stations around the world. He also observed that CO~2~ concentrations had increased over the same period, and presciently suggested that this actually caused the observed warming. The "Callendar effect", unfortunately, was widely dismissed by meteorologists at the time.[^4]
 
 Today, a cultural and political battle is being waged worldwide between two distinct camps: Those who believe that the scientific community's observations and general consensus of a change in the Earth's climate and the increase in the atmosphere's temperature caused by the increase of greenhouse gases from human activity, and those who don't.
 
@@ -283,7 +283,7 @@ Today, a cultural and political battle is being waged worldwide between two dist
 
 The general consensus amongst climate scientists is that the main cause of the current global warming trend is human expansion of the "greenhouse effect" — warming that results when the atmosphere traps heat radiating from Earth toward space.[^20] The greenhouse effect itself is a natural phenomenon which is the trapping of solar heat in the atmosphere using atmospheric gases. It is this warming of our atmosphere which has allowed all life on Earth to exist and thrive.
 
-Certain gases in the atmosphere block heat from escaping. Long-lived gases that remain semi-permanently in the atmosphere and do not respond physically or chemically to changes in temperature are described as "forcing" climate change. Gases, such as water vapour, which respond physically or chemically to changes in temperature are seen as "feedbacks."
+Certain gases in the atmosphere block heat from escaping. Long-lived gases that remain semi-permanently in the atmosphere and do not respond physically or chemically to changes in temperature are described as "forcing" climate change. Gases, such as water vapour, which respond physically or chemically to changes in temperature are seen as "feedback".
 
 The main gases that contribute to the greenhouse effect are the following: Water vapour, Carbon dioxide, Methane, Nitrous oxide, and Halogenated gases (which include chlorofluorocarbons). Out of all these gases, water vapour concentrations are actually affected by greenhouse effect cause by the others. So as the Earth's atmosphere heats up, more of the ocean is evaporated, increasing the concentration of water vapour, hence why it is considered an important feedback mechanism.[^21]
 
@@ -443,7 +443,7 @@ atm_conc_co2_plot_2
 ### Global Atmospheric Concentrations of Methane Over Time | Years 800,000 BCE to 2015 CE 
 https://www.epa.gov/climate-indicators/climate-change-indicators-atmospheric-concentrations-greenhouse-gases
 
-Methane is a gas that is naturally emitted by natural sources such as wetlands, as well as human activities such as leakage from natural gas systems and the raising of livestock. Methane's lifetime in the atmosphere is much shorter than CO~2~'s, however it is up to 25 times more efficient than CO~2~ in retaining heat in the atmosphere. As the food livestock industry grows to accommodate an ever-expanding human population, the output of methane from animal waste alone is causing a sharp rise in methane in the atmosphere. The concentration of methane in the atmosphere has more than doubled since preindustrial times.[^13]
+Methane is a gas that is naturally emitted by natural sources such as wetlands, as well as human activities such as leakage from natural gas systems and the raising of livestock. Methane's lifetime in the atmosphere is much shorter than CO~2~'s, however it is up to 25 times more efficient than CO~2~ in retaining heat in the atmosphere. As the food livestock industry grows to accommodate an ever-expanding human population, the output of methane from animal waste alone is causing a sharp rise in methane in the atmosphere. The concentration of methane in the atmosphere has more than doubled since pre-industrial times.[^13]
 
 <p>&nbsp;</p>
 
@@ -766,7 +766,7 @@ According to current research, deforestation in tropical rainforests adds more c
 
 Trees play a huge role in the carbon cycle. They convert the CO~2~ in the air to oxygen, through the process of photosynthesis, and in this way, they can be looked at as a natural regulator of the carbon dioxide. The more trees, the less carbon dioxide in the atmosphere and the more oxygen.[^30]
 
-Deforestation compounds the effects of climate change by reducing efficacy of the very mechanism that removes the naturaly levels of CO~2~ from the atmosphere, let alone the increased levels caused by human industrial activity.
+Deforestation compounds the effects of climate change by reducing efficacy of the very mechanism that removes the natural levels of CO~2~ from the atmosphere, let alone the increased levels caused by human industrial activity.
 
 
 ``` {r world_bank_data, warning = FALSE, message = FALSE}
@@ -1330,7 +1330,7 @@ forest_area_temperature_all_countries_plot <-
     forest_area_temperature_all_countries_filtered_data)
 ```
 
-Plotting the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the forest area reduce in size, atmospheric CO~2~ descreases linearly. The Pearson's correlation estimate is `r toString(forest_area_temperature_all_countries_cor$estimate)`, with a p-value of `r toString(forest_area_temperature_all_countries_cor$p.value)`.
+Plotting the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the forest area reduce in size, atmospheric CO~2~ decreases linearly. The Pearson's correlation estimate is `r toString(forest_area_temperature_all_countries_cor$estimate)`, with a p-value of `r toString(forest_area_temperature_all_countries_cor$p.value)`.
 
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
@@ -1344,7 +1344,7 @@ forest_area_temperature_all_countries_plot
 
 ## GDP
 
-As discussed in section 3.2.1 above, 87 percent of all human-produced carbon dioxide emissions come from the burning of fossil fuels like coal, natural gas and oil. Two factors that measure the commercal activity of a nation state are the Gross Domestic Product, or GDP, and Industrialisation Intensity Index.
+As discussed in section 3.2.1 above, 87 percent of all human-produced carbon dioxide emissions come from the burning of fossil fuels like coal, natural gas and oil. Two factors that measure the commercial activity of a nation state are the Gross Domestic Product, or GDP, and Industrialisation Intensity Index.
 
 The Gross Domestic Product, or GDP, is a monetary measure of the market value of all final goods and services produced in a period[^32] (yearly, in this dataset). The cause of a rise in a nation's GDP is the increase in the production of said good and services, which includes industrial process and outputs. This industrial output, combined with consumer activities, generate climate-changing CO~2~ emissions.
 
@@ -1518,7 +1518,7 @@ As explained in section 3.2.1 above, 87 percent of all human-produced carbon dio
 
 The following plot of _GDP_ vs _Atmospheric CO~2~_ shows a strong visual correlation between these two variables, as an increase in _GDP_ correlates with an increase in _Atmospheric CO~2~_. The Pearson correlation estimate is `r toString(format(round(gdp_atmospheric_co2_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(gdp_atmospheric_co2_all_countries_cor$p.value, digits = 3, scientific = TRUE))`, which validates the strong correlation shown in the plot.
 
-From this analysis, it is possible that the commercial activities that drive _GDP_ up are a reasonably strong contibuting factor of increased _Atmospheric CO~2~_.
+From this analysis, it is possible that the commercial activities that drive _GDP_ up are a reasonably strong contributing factor of increased _Atmospheric CO~2~_.
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
 ``` {r gdp_atmospheric_co2_all_countries_plot, fig.width = 8, fig.height = 4, warning = FALSE, echo = FALSE}
@@ -1581,9 +1581,9 @@ gdp_co2_emissions_all_countries_plot <- gdp_co2_emissions_all_countries_plot_fn(
   gdp_co2_emissions_all_countries)
 ```
 
-The following plot of _GDP_ vs _CO~2~ Emissions_ shows a strong visual linear correlation between these two variables, with a continuous rise of CO~2 occuring with GDP. The Pearson correlation estimate is `r toString(format(round(gdp_co2_emissions_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(gdp_co2_emissions_all_countries_cor$p.value, digits = 3, scientific = TRUE))`, which validates the correlation shown in the plot. This correlation is slightly stronger than that between _GDP_ and _Atmospheric CO~2~_ calculated in the previous section.
+The following plot of _GDP_ vs _CO~2~ Emissions_ shows a strong visual linear correlation between these two variables, with a continuous rise of CO~2 occurring with GDP. The Pearson correlation estimate is `r toString(format(round(gdp_co2_emissions_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(gdp_co2_emissions_all_countries_cor$p.value, digits = 3, scientific = TRUE))`, which validates the correlation shown in the plot. This correlation is slightly stronger than that between _GDP_ and _Atmospheric CO~2~_ calculated in the previous section.
 
-From this analysis, it can be estimated that the commercial activities that drive _GDP_ up are a reasonably strong contibuting factor of increased _CO~2~ Emissions_.
+From this analysis, it can be estimated that the commercial activities that drive _GDP_ up are a reasonably strong contributing factor of increased _CO~2~ Emissions_.
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
 ``` {r gdp_co2_emissions_all_countries_plot, fig.width = 8, fig.height = 4, warning = FALSE, echo = FALSE}
@@ -1727,7 +1727,7 @@ land_surface_air_temp_plot
 
 The second plot shows the same dataset broken down by month between each year, showing a gradual increase in temperature over the year-period, as well as unusual temperature fluctuations within each year closer to the year 2000 and beyond. Overall the mean atmospheric temperature has increased worldwide by approximately 1.5 degrees.
 
-Why is such a miniscule increase of mean atmospheric temperature so significant? According to Mark Lynas (via an article in The Guardian), the author of _Six Degrees: Our Future on a Hotter Planet_, such temperature increases can lead to quite damaging effects to the earth, some of which as follows.
+Why is such a minuscule increase of mean atmospheric temperature so significant? According to Mark Lynas (via an article in The Guardian), the author of _Six Degrees: Our Future on a Hotter Planet_, such temperature increases can lead to quite damaging effects to the earth, some of which as follows.
 
 **For a rise up to 2^o^C:**
 - Arctic sea icecap disappears, leaving polar bears homeless and changing the Earth's energy balance dramatically as reflective ice is replaced during summer months by darker sea surface.
@@ -1748,9 +1748,9 @@ Why is such a miniscule increase of mean atmospheric temperature so significant?
 Global average temperatures are now hotter than for 50m years. The Arctic region sees temperatures rise much higher than average - up to 20^o^C - meaning the entire Arctic is now ice-free all year round. Most of the topics, sub-tropics and even lower mid-latitudes are too hot to be inhabitable. Sea level rise is now sufficiently rapid that coastal cities across the world are largely abandoned.
 
 **6^o^C and above:**
-Danger of "runaway warming", perhaps spurred by release of oceanic methane hydrates. Could the surface of the Earth become like Venus, entirely uninhabitable? Most sea life is dead. Human refuges now confined entirely to highland areas and the polar regions. Human population is drastically reduced. Perhaps 90% of species become extinct, rivalling the worst mass extinctions in the Earth's 4.5 billion-year history.[^35]
+Danger of "runaway warming", perhaps spurred by release of oceanic methane hydrates. Could the surface of the Earth become like Venus, entirely uninhabitable? Most sea life is dead. Human refuges now confined entirely to highland areas and the polar regions. Human population is drastically reduced. Perhaps 90% of species become extinct, rivaling the worst mass extinctions in the Earth's 4.5 billion-year history.[^35]
 
-With this terrifying perspective, an increase of 1.5^o^C is no longer a mere miniscule rise, and should act as an alarm to political policymakers and captains of industry worldwide.
+With this terrifying perspective, an increase of 1.5^o^C is no longer a mere minuscule rise, and should act as an alarm to political policymakers and captains of industry worldwide.
 
 ***
 <p>&nbsp;</p>
@@ -2126,7 +2126,7 @@ land_ice_mass_antarctica_atmospheric_co2_plot <-
 
 Given that the land ice mass of both the Arctic and Antarctic regions is diminishing as an almost linear rate, it's possible cause can be investigated by 
 
-The melting of the ice masses in Greenland and Antarctica is being caused by the increasing global atmosperic temperature, which in turn is being caused by the increase in the concentrations of greenhouse gases such as CO~2~. Plotting ice mass loss for both regions against atmospheric CO~2~ concentrations over the same time period should show a strong correlation, which is demonstrated by the following 2 plots:
+The melting of the ice masses in Greenland and Antarctica is being caused by the increasing global atmospheric temperature, which in turn is being caused by the increase in the concentrations of greenhouse gases such as CO~2~. Plotting ice mass loss for both regions against atmospheric CO~2~ concentrations over the same time period should show a strong correlation, which is demonstrated by the following 2 plots:
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
 ``` {r land_ice_mass_greenland_atmospheric_co2_plot, fig.width = 16, fig.height = 8, echo = FALSE}
@@ -2343,7 +2343,7 @@ multiplot(plotlist = atm_conc_selected_halogenated_gases_plotlist, cols = 2)
 ```
 </div></div>
 
-Deforestation compounds the effects of climate change by reducing the number of trees which convert CO~2~ to O~2~ vie photosysthesis. Despite reductions in the rate of deforestation in the last ten years, the Amazon Rainforest will be reduced by 40% by 2030 at the current rate.[^31] Accord to the plot below, from 1990 to 2015 approximately `r toString(comma_format()(total_deforestation_km2_1990_2015))` km^2^ of rainforest has been cleared.
+Deforestation compounds the effects of climate change by reducing the number of trees which convert CO~2~ to O~2~ vie photosynthesis. Despite reductions in the rate of deforestation in the last ten years, the Amazon Rainforest will be reduced by 40% by 2030 at the current rate.[^31] Accord to the plot below, from 1990 to 2015 approximately `r toString(comma_format()(total_deforestation_km2_1990_2015))` km^2^ of rainforest has been cleared.
 
 Gross Domestic Product, or GDP, is a monetary measure of the market value of all final goods and services produced in a period, and is a good quantifiable measure of of human commercial activity. Plotting global yearly GDP levels against factors such as Atmospheric CO~2~ and Atmospheric Temperature show a strong linear correlation.
 
