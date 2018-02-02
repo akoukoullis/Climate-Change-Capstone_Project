@@ -12,7 +12,6 @@ raw_data/
 scratchpad.R
 ClimateChange-master/
 .Rproj.user
-*.Rproj
 world_heatmap_test.R
 script.R
 script.html
