@@ -1254,7 +1254,7 @@ temperature_all_countries_plot
 
 ### Forest Area vs Temperature, All Countries | Years 1990 to 2015
 
-Using data from the World Bank Data Portal, we can correlate deforestation with global mean temperatures of countries, in order to show how these factors are directly related and affect each other. On the first plot, the _Forest Area_ and _Atmospheric CO~2~_ variables over time are superimposed show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Atmospheric CO~2~_.
+Using data from the World Bank Data Portal, we can correlate deforestation with global mean temperatures of countries, in order to show how these factors are directly related and affect each other. On the first plot, the _Forest Area_ and _Atmospheric CO~2~_ variables plotted against each other over time show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Atmospheric CO~2~_.
 
 ``` {r forest_area_temperature_all_countries, warning = FALSE, message = FALSE}
 
@@ -1330,7 +1330,7 @@ forest_area_temperature_all_countries_plot <-
     forest_area_temperature_all_countries_filtered_data)
 ```
 
-Plotting the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the forest area reduce in size, atmospheric CO~2~ decreases linearly. The Pearson's correlation estimate is `r toString(forest_area_temperature_all_countries_cor$estimate)`, with a p-value of `r toString(forest_area_temperature_all_countries_cor$p.value)`.
+Plotting the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the forest area reduce in size, atmospheric CO~2~ decreases linearly. The Pearson's correlation estimate is `r toString(format(round(forest_area_temperature_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_temperature_all_countries_cor$p.value, digits = 3))`.
 
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
@@ -1346,7 +1346,7 @@ forest_area_temperature_all_countries_plot
 
 As discussed in section 3.2.1 above, 87 percent of all human-produced carbon dioxide emissions come from the burning of fossil fuels like coal, natural gas and oil. Two factors that measure the commercial activity of a nation state are the Gross Domestic Product, or GDP, and Industrialisation Intensity Index.
 
-The Gross Domestic Product, or GDP, is a monetary measure of the market value of all final goods and services produced in a period[^32] (yearly, in this dataset). The cause of a rise in a nation's GDP is the increase in the production of said good and services, which includes industrial process and outputs. This industrial output, combined with consumer activities, generate climate-changing CO~2~ emissions.
+The Gross Domestic Product, or GDP, is a monetary measure of the market value of all final goods and services produced in a period[^32] (yearly, in this dataset). The cause of a rise in a nation's GDP is the increase in the production of said good and services, which includes industrial processes and outputs. This industrial output, combined with consumer activities, generate climate-changing CO~2~ emissions.
 
 This document will specifically use the GDP to measure the commercial activity of a nation state to attempt to correlate man-made activity with global atmospheric CO~2~, CO~2~ emissions, and atmospheric temperature trends.
 

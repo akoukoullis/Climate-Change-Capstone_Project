@@ -74,6 +74,7 @@ Causes of Climate Change
 
 ![plot of chunk forest_area_over_time_plot](script-figure/forest_area_over_time_plot-1.png)
 
+
 Causes of Climate Change
 ========================================================
 
@@ -84,10 +85,22 @@ Causes of Climate Change
 
 
 - The _Forest Area_ and _Atmospheric CO<sub>2</sub>_ variables plotted against each other show a strong correlation.
-- The Pearson's correlation estimate is -0.98, with a p-value of 3.43e-17.
+- The Pearson's correlation estimate is -0.83, with a p-value of 0.000000206.
 - As the global forest area reduces in size, atmospheric CO<sub>2</sub> increases linearly.
 
 ![plot of chunk forest_area_atmospheric_co2_all_countries_plot_1](script-figure/forest_area_atmospheric_co2_all_countries_plot_1-1.png)
+
+
+Causes of Climate Change
+========================================================
+
+## Deforestation
+
+- The _Forest Area_ and _Atmospheric CO~2~_ variables plotted against each other over time show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Atmospheric CO~2~_.
+- The Pearson's correlation estimate is -0.83, with a p-value of 0.000000206.
+- As the global forest area reduces in size, global atmospheric temerature decreases linearly.
+
+![plot of chunk forest_area_temperature_all_countries_plot](script-figure/forest_area_temperature_all_countries_plot-1.png)
 
 
 Causes of Climate Change
@@ -121,8 +134,8 @@ Effects of Climate Change
 
 
 - The core variable at the heart of the study of climate change is the planet's atmospheric temperature.
-- The primary effect of the increase in greehouse gases in the atmosphere is the the increase in average atmospheric temperatures.
-- The polt below shows an overall increase in worldwide temperatures from the year 1990 to 2015.
+- The primary effect of the increase in greenhouse gases in the atmosphere is the the increase in average atmospheric temperatures.
+- The plot below shows an overall increase in worldwide temperatures from the year 1990 to 2015.
 
 ![plot of chunk temperature_all_countries_plot](script-figure/temperature_all_countries_plot-1.png)
 
@@ -134,7 +147,7 @@ Effects of Climate Change
 
 
 
-- As the oceans warm due to an increasing global temperature, seawater expands—taking up more space in the ocean basin and causing a rise in water level.
+- As the oceans warm due to an increasing global temperature, seawater expands, taking up more space in the ocean basin and causing a rise in water level.
 - Secondly, the melting of ice over land, such as in Greenland or Antarctica, adds water to the ocean.
 
 ![plot of chunk global_mean_sea_level_plot](script-figure/global_mean_sea_level_plot-1.png)
