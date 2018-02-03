@@ -2343,7 +2343,7 @@ multiplot(plotlist = atm_conc_selected_halogenated_gases_plotlist, cols = 2)
 ```
 </div></div>
 
-Deforestation compounds the effects of climate change by reducing the number of trees which convert CO~2~ to O~2~ vie photosynthesis. Despite reductions in the rate of deforestation in the last ten years, the Amazon Rainforest will be reduced by 40% by 2030 at the current rate.[^31] Accord to the plot below, from 1990 to 2015 approximately `r toString(comma_format()(total_deforestation_km2_1990_2015))` km^2^ of rainforest has been cleared.
+Deforestation compounds the effects of climate change by reducing the number of trees which convert CO~2~ to O~2~ via photosynthesis. Despite reductions in the rate of deforestation in the last ten years, the Amazon Rainforest will be reduced by 40% by 2030 at the current rate.[^31] According to the plot below, from 1990 to 2015 approximately `r toString(comma_format()(total_deforestation_km2_1990_2015))` km^2^ of rainforest has been cleared.
 
 Gross Domestic Product, or GDP, is a monetary measure of the market value of all final goods and services produced in a period, and is a good quantifiable measure of of human commercial activity. Plotting global yearly GDP levels against factors such as Atmospheric CO~2~ and Atmospheric Temperature show a strong linear correlation.
 
@@ -2363,7 +2363,7 @@ multiplot(
 
 In the **Effects** section of this report, various factors are analysed which demonstrate the catastrophic effects of climate change. The mean estimates of global surface-air temperatures from 1880 to 2016 are plotted on a time scale, and show that the earth's temperature has been steadily increasing, which will have far-reaching consequences on the ecosystem and potentially human population areas.
 
-The Global Mean Sea Level data was plotted on a time scale from 1880 to 2017, and shows an alarming linear seal level rise globally, which is the result of a warming atmosphere and a subsequent worldwide ice mass melting.
+The Global Mean Sea Level data was plotted on a time scale from 1880 to 2017, and shows an alarming linear sea level rise globally, which is the result of a warming atmosphere and a subsequent worldwide ice mass melting.
 
 Investigating Ice Masses in more detail, the data gathered by NASA's GRACE satellites show that both the masses in Greenland and Antarctica have exhibited a disturbing declining trend from 2002 until 2016.
 
