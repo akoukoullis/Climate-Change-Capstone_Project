@@ -85,7 +85,7 @@ Causes of Climate Change
 
 
 - The _Forest Area_ and _Atmospheric CO<sub>2</sub>_ variables plotted against each other show a strong correlation.
-- The Pearson's correlation estimate is -0.83, with a p-value of 0.000000206.
+- The Pearson's correlation estimate is -0.98, with a p-value of 3.43e-17.
 - As the global forest area reduces in size, atmospheric CO<sub>2</sub> increases linearly.
 
 ![plot of chunk forest_area_atmospheric_co2_all_countries_plot_1](script-figure/forest_area_atmospheric_co2_all_countries_plot_1-1.png)
@@ -96,7 +96,7 @@ Causes of Climate Change
 
 ## Deforestation
 
-- The _Forest Area_ and _Atmospheric CO~2~_ variables plotted against each other over time show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Atmospheric CO~2~_.
+- The _Forest Area_ and _Temperature_ variables plotted against each other over time show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Atmospheric CO~2~_.
 - The Pearson's correlation estimate is -0.83, with a p-value of 0.000000206.
 - As the global forest area reduces in size, global atmospheric temerature decreases linearly.
 

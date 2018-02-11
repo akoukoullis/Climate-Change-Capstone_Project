@@ -801,7 +801,7 @@ forest_area_temperature_all_countries_plot <-
 ```
 
 - The _Forest Area_ and _Atmospheric CO<sub>2</sub>_ variables plotted against each other show a strong correlation.
-- The Pearson's correlation estimate is `r toString(format(round(forest_area_temperature_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_temperature_all_countries_cor$p.value, digits = 3))`.
+- The Pearson's correlation estimate is `r toString(format(round(forest_area_atmospheric_co2_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_atmospheric_co2_all_countries_cor$p.value, digits = 3))`.
 - As the global forest area reduces in size, atmospheric CO<sub>2</sub> increases linearly.
 
 ``` {r forest_area_atmospheric_co2_all_countries_plot_1, fig.width = 12, fig.height = 6, warning = FALSE, message = FALSE, echo = FALSE}
@@ -814,7 +814,7 @@ Causes of Climate Change
 
 ## Deforestation
 
-- The _Forest Area_ and _Atmospheric CO~2~_ variables plotted against each other over time show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Atmospheric CO~2~_.
+- The _Forest Area_ and _Temperature_ variables plotted against each other over time show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Atmospheric CO~2~_.
 - The Pearson's correlation estimate is `r toString(format(round(forest_area_temperature_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_temperature_all_countries_cor$p.value, digits = 3))`.
 - As the global forest area reduces in size, global atmospheric temerature decreases linearly.
 

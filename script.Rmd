@@ -1254,7 +1254,7 @@ temperature_all_countries_plot
 
 ### Forest Area vs Temperature, All Countries | Years 1990 to 2015
 
-Using data from the World Bank Data Portal, we can correlate deforestation with global mean temperatures of countries, in order to show how these factors are directly related and affect each other. On the first plot, the _Forest Area_ and _Atmospheric CO~2~_ variables plotted against each other over time show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Atmospheric CO~2~_.
+Using data from the World Bank Data Portal, we can correlate deforestation with global mean temperatures of countries, in order to show how these factors are directly related and affect each other. On the first plot, the _Forest Area_ and _Temperature_ variables plotted against each other over time show clearly an inverse relationship of decreasing _Forest Area_ with increasing _Temperature_.
 
 ``` {r forest_area_temperature_all_countries, warning = FALSE, message = FALSE}
 
@@ -1330,7 +1330,7 @@ forest_area_temperature_all_countries_plot <-
     forest_area_temperature_all_countries_filtered_data)
 ```
 
-Plotting the _Forest Area_ and _Atmospheric CO~2~_ variables against each other directly again shows a strong correlation, indicating that as the forest area reduce in size, atmospheric CO~2~ decreases linearly. The Pearson's correlation estimate is `r toString(format(round(forest_area_temperature_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_temperature_all_countries_cor$p.value, digits = 3))`.
+Plotting the _Forest Area_ and _Temperature_ variables against each other directly again shows a strong correlation, indicating that as the forest area reduce in size, atmospheric CO~2~ increases linearly. The Pearson's correlation estimate is `r toString(format(round(forest_area_temperature_all_countries_cor$estimate, 2), nsmall = 2))`, with a p-value of `r toString(format(forest_area_temperature_all_countries_cor$p.value, digits = 3))`.
 
 
 <div class="row" style="margin-top: 40px;"><div class="col-xs-10 col-xs-offset-1">
